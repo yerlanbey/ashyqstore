@@ -1,17 +1,16 @@
 @extends('auth.layouts.master')
 
 @section('title')
-    Создать магазин
+    Создать ресторан
 @endsection
 
 @section('content-section')
     <div class="padding" >
-        <form action="{{route('store.shop')}}" method="POST" data-ui-jp="parsley" enctype="multipart/form-data">
+        <form action="{{ route('restaurant.store') }}" method="POST" data-ui-jp="parsley" enctype="multipart/form-data">
             @csrf
             <div class="box">
                 <div class="box-header">
-                    <h2>Создать Торговый Комплекс</h2>
-
+                    <h2>Создать Заведение</h2>
                 </div>
                 <div class="box-body">
                     @if(session()->has('success'))
@@ -40,7 +39,17 @@
                         <label class="col-sm-2 form-control-label" for="work_time">Время работы:</label>
                         <div class="col-sm-9">
                             @include('auth.layouts.error', ['key' => 'work_time'])
-                            <input type="text" name="work_time" id="work_time" class="form-control rounded">
+                            <select name="work_time" id="work_time" class="form-control">
+                                <option disabled="disabled" selected="selected" value>Выберите время</option>
+                                <option>24 часа</option>
+                                <option> 09:00 - 23:00</option>
+                                <option> 09:00 - 00:00</option>
+                                <option> 09:00 - 01:00</option>
+                                <option> 09:00 - 02:00</option>
+                                <option> 10:00 - 23:00</option>
+                                <option> 10:00 - 00:00</option>
+                                <option> 10:00 - 01:00</option>
+                            </select>
                         </div>
                     </div>
 
@@ -63,8 +72,9 @@
 
                     <div class="form-group row">
                         <div class="col-sm-9">
-                             <input type="hidden" class="form-control rounded" name="user_id" id="user_id"
+                            <input type="hidden" class="form-control rounded" name="user_id" id="user_id"
                                    value="{{$userId->id}}">
+
                         </div>
                     </div>
                     <div class="form-group row">
@@ -100,4 +110,33 @@
         </form>
 
     </div>
+
+    <script src = "// code.jquery.com/jquery-1.11.2.min.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type = "text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select-all').click(function () {
+                let $select2 = $(this).parent().siblings('.select2')
+                $select2.find('option').prop('selected', 'selected')
+                $select2.trigger('change')
+            })
+            $('.deselect-all').click(function () {
+                let $select2 = $(this).parent().siblings('.select2')
+                $select2.find('option').prop('selected', '')
+                $select2.trigger('change')
+            })
+
+            $('.select2').select2()
+        });
+
+
+        $('#name').change(function(e) {
+            $.get('{{ route('restaurant.checkSlug') }}',
+                { 'name': $(this).val() },
+                function( data ) {
+                    $('#slug').val(data.slug);
+                }
+            );
+        });
+    </script>
 @endsection

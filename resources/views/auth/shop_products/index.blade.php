@@ -1,13 +1,13 @@
 @extends('auth.layouts.master')
 
 @section('title')
-    {{$company->name}}
+    {{$shop->name}}
 @endsection
 
 @section('content-section')
     <div class="container">
         <div class="col-md-12">
-            <h1>Все товары <b>{{$company->name}}</b></h1>
+            <h1>Все товарыs <b>{{$shop->name}}</b></h1>
             <form action="{{route('product.search')}}" method="GET" enctype="multipart/form-data">
                 @include('auth.layouts.error', ['key' => 'searching'])
                 <div class="row p-a">
@@ -69,9 +69,9 @@
                 @endforeach
                 </tbody>
             </table>
-            @isset($company)
+            @isset($shop)
                 <a class="btn btn-success" type="button"
-                   href="{{ route('company.create', $company->id) }}">
+                   href="{{ route('product.create', $shop->id) }}">
                     Добавить товар
                 </a>
             @endisset

@@ -91,6 +91,15 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         return $this->hasMany(Shop::class);
     }
 
+    public function markets()
+    {
+        return $this->hasMany(Market::class);
+    }
+
+    public function restaurants()
+    {
+        return$this->hasMany(Restaurant::class);
+    }
     public function roles()
     {
         return $this->belongsToMany(Role::class);

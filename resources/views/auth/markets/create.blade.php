@@ -6,12 +6,11 @@
 
 @section('content-section')
     <div class="padding" >
-        <form action="{{  }}" method="POST" data-ui-jp="parsley" enctype="multipart/form-data">
+        <form action="{{ route('market.store') }}" method="POST" data-ui-jp="parsley" enctype="multipart/form-data">
             @csrf
             <div class="box">
                 <div class="box-header">
                     <h2>Создать Продуктовый Магазин</h2>
-
                 </div>
                 <div class="box-body">
                     @if(session()->has('success'))
@@ -40,7 +39,17 @@
                         <label class="col-sm-2 form-control-label" for="work_time">Время работы:</label>
                         <div class="col-sm-9">
                             @include('auth.layouts.error', ['key' => 'work_time'])
-                            <input type="text" name="work_time" id="work_time" class="form-control rounded">
+                            <select name="work_time" id="work_time" class="form-control">
+                                <option disabled="disabled" selected="selected" value>Выберите время</option>
+                                <option>24 часа</option>
+                                <option> 09:00 - 18:00</option>
+                                <option> 09:00 - 19:00</option>
+                                <option> 09:00 - 20:00</option>
+                                <option> 09:00 - 21:00</option>
+                                <option> 10:00 - 18:00</option>
+                                <option> 10:00 - 19:00</option>
+                                <option> 10:00 - 20:00</option>
+                            </select>
                         </div>
                     </div>
 
@@ -65,6 +74,7 @@
                         <div class="col-sm-9">
                             <input type="hidden" class="form-control rounded" name="user_id" id="user_id"
                                    value="{{$userId->id}}">
+
                         </div>
                     </div>
                     <div class="form-group row">

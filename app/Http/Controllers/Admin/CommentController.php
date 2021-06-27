@@ -22,8 +22,9 @@ class CommentController extends Controller
         $products = Product::where('user_id', Auth::user()->id)->get();
         $array = array();
         foreach ($products as $product){
-            array_push($array,$product->code);
+            array_push($array,$product->slug);
         }
+
         $comments = Comment::whereIn('product_code',$array)->paginate(20);
 
         return view('auth.comments.index', compact('comments'));

@@ -66,8 +66,7 @@
                                             @if($product->category_id == $category->id)
                                             selected
                                         @endif
-                                        @endisset
-                                    >
+                                        @endisset>
                                         {{$category->name}}
                                     </option>
 

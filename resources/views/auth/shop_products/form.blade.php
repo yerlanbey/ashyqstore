@@ -15,7 +15,7 @@
 
             <h1>Добавить товар</h1>
 
-            <form method="POST" enctype="multipart/form-data" action="{{ route('company.store') }}">
+            <form method="POST" enctype="multipart/form-data" action="{{ route('product.store') }}">
                 <div>
                     @csrf
                     <br>

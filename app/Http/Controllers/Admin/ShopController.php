@@ -5,7 +5,9 @@ use App\Category;
 use App\Color;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ShopRequest;
+use App\Market;
 use App\Product;
+use App\Restaurant;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Faker\Provider\Company;
 use Illuminate\Support\Facades\Auth;
@@ -21,11 +23,12 @@ class ShopController extends Controller
     public function create(User $userId)
     {
         $themes = Theme::all();
-        return view('auth.create.index',compact('userId','themes'));
+        return view('auth.shops.index',compact('userId','themes'));
     }
     public function storeData(ShopRequest $request)
     {
         $parametrs = $request->all();
+
         unset($parametrs['image']);
         if($request->has('image')){
             $parametrs['image'] = $request->file('image')->store('shops');
@@ -41,25 +44,30 @@ class ShopController extends Controller
     public function getProduct($companyId)
     {
         if(Auth::user()->isAdmin()){
-            $adminId = Auth::user()->id;
-            $company = Shop::find($companyId);
-            $products = $company->products;
+
+            $shop = Shop::where('slug',$companyId)->first();
+            $products = $shop->products;
 
         }
-        return view('auth.more.index',compact('products','company'));
+        return view('auth.shop_products.index',compact('products','shop'));
     }
 
     public function createProduct($companyId)
     {
+
         $company = Shop::find($companyId);
         $categories = Category::all();
         $colors = Color::all()->pluck('code','name');
-        return view('auth.more.form', compact('company','categories','colors'));
+        return view('auth.shop_products.form', compact('company','categories','colors'));
     }
 
     public function storeProduct(ProductRequest $request)
     {
+
         $parametrs = $request->all();
+        if (strpos($parametrs['price'], ' ') !== false ){
+            $parametrs['price'] = str_replace(' ', '', $parametrs['price']);
+        }
         if(Auth::user()->isAdmin()){
             $parametrs['user_id'] = Auth::user()->id;
         }
@@ -74,7 +82,16 @@ class ShopController extends Controller
             return redirect()->route('home')->with('warning', 'Упс, что-то пошло не так, повторите попытку');
         }
     }
+    public function destroyProduct(Product $product)
+    {
+        $success = $product->delete();
 
+        if($success){
+            return redirect()->route('home')->with('success', 'Вы удалили товар '.$product->name);
+        }else{
+            return redirect()->route('home')->with('warning', 'Упс, что-то пошло не так повторите попытку!');
+        }
+    }
 
     public function checkSlug(Request $request)
     {

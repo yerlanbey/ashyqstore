@@ -99,7 +99,7 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => '22',
-                'title' => 'shop_create',
+                'title' => 'shop_products',
             ],
             [
                 'id'    => '23',

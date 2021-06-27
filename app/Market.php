@@ -20,9 +20,9 @@ class Market extends Model
         return $this->belongsTo(Theme::class, 'theme_code', 'code');
     }
 
-    public function products()
+    public function foods()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Food::class);
     }
 
     public function sluggable()

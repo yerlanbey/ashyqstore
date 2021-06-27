@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Dish;
+use App\Food;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Comment;
@@ -8,10 +10,15 @@ use App\Reply;
 use Illuminate\Support\Facades\Auth;
 class CommentController extends Controller
 {
-    public function PostingComment(Request $request, $productId){
-        if (Auth::check()) {
+    public function PostingComment(Request $request, $slug){
+        $product = Product::where('slug',$slug)->first();
+        $food = Food::where('slug', $slug)->first();
+        $dish = Dish::where('slug', $slug)->first();
+
+
+        if (Auth::check() && isset($product)) {
             Comment::create([
-                'product_code' => $productId,
+                'product_code' => $slug,
                 'name' => Auth::user()->name,
                 'comment' => $request->input('comment'),
                 'user_id' => Auth::user()->id
@@ -19,8 +26,30 @@ class CommentController extends Controller
             ]);
 
             return redirect()->back()->with('success','Комментарий добавлено успешно..!');
+        }else if(Auth::check() && isset($food)) {
+
+            Comment::create([
+                'food_code' => $slug,
+                'name' => Auth::user()->name,
+                'comment' => $request->input('comment'),
+                'user_id' => Auth::user()->id
+
+            ]);
+
+            return redirect()->back()->with('success', 'Комментарий добавлено успешно..!');
+        }else if(Auth::check() && isset($dish)){
+
+            Comment::create([
+                'dish_code' => $slug,
+                'name' => Auth::user()->name,
+                'comment' => $request->input('comment'),
+                'user_id' => Auth::user()->id
+
+            ]);
+
+            return redirect()->back()->with('success', 'Комментарий добавлено успешно..!');
         }else{
-            return back()->back()->with('error','Something wrong');
+            return back()->back()->with('error','Чтоөто пошло не так, повторите попытку!');
         }
     }
 

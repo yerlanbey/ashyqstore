@@ -5,6 +5,9 @@ namespace App\Http\Controllers\mainAdmin;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Market;
+use App\ProductCategory;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,7 +20,7 @@ class MainCategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('created_at', 'desc')->paginate(20);
+        $categories = Category::orderBy('created_at', 'desc')->whereNull('category_id')->paginate(20);
         return view('MainAdmin.categories.index',compact('categories'));
     }
 
@@ -28,7 +31,10 @@ class MainCategoryController extends Controller
      */
     public function create()
     {
-        return view('MainAdmin.categories.form');
+        $categories = Category::whereNull('category_id')
+            ->with('childCategories')
+            ->get();
+        return view('MainAdmin.categories.form', compact('categories'));
     }
 
     /**
@@ -69,6 +75,7 @@ class MainCategoryController extends Controller
     public function edit($category)
     {
         $category = Category::find($category);
+
         return view('MainAdmin.categories.form',compact('category'));
     }
 
@@ -79,18 +86,23 @@ class MainCategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $category)
+    public function update(Request $request, $category)
     {
 
         $category = Category::find($category);
-        $parametrs = $request->all();//Получаем все данные из запроса
-        unset($parametrs['image']);//исключаем карттинку
-        if($request->has('image')){// проверяем если есть картинка
-            Storage::delete($category->image);//удаляем превед картинку
-            $parametrs['image']=$request->file('image')->store('categories');//сохр новую картинку в файл
+        $request->validate([
+            'name' => 'required',
+            'code' => 'required',
+
+        ]);
+        $parametrs = $request->all();
+        unset($parametrs['image']);
+        if($request->has('image')){
+            Storage::delete($category->image);
+            $parametrs['image']=$request->file('image')->store('categories');
         }
-        $category->update($parametrs);//обновляем все данные
-        return redirect()->route('maincategory.index');//отправляем на индекс страницу
+        $category->update($parametrs);
+        return redirect()->route('maincategory.index');
     }
 
     /**
@@ -104,5 +116,11 @@ class MainCategoryController extends Controller
         $category = Category::find($category);
         $category->delete();
         return redirect()->route('maincategory.index');
+    }
+
+    public function checkSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Category::class, 'code', $request->name);
+        return response()->json(['slug' => $slug]);
     }
 }

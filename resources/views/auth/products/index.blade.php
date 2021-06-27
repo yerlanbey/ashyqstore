@@ -7,7 +7,7 @@
 @section('content-section')
 <div class="container">
     <div class="col-md-12">
-        <h1>Все товары</h1>
+        <h1>Все товарыss</h1>
         <form action="{{route('product.search')}}" method="GET" enctype="multipart/form-data">
             <div class="row p-a">
                 <div class="col-sm-3">

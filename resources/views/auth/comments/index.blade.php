@@ -38,6 +38,7 @@
                     </th>
                 </tr>
                 @foreach($comments as $comment)
+
                     @if($comment->product->user_id == Auth::user()->id)
                         <tr>
                             <td>{{ $comment->id }}</td>

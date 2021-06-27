@@ -13,7 +13,7 @@ $(document).ready(function(){
             '<input type="hidden" name="comment_id" value="'+ cid +'">' +
             '<input type="hidden" name="name" value="'+name+'">' +
             '<div class="form-group">' +
-            '<textarea class="form-control" name="reply" placeholder="Enter your reply" >'+owner+","+' </textarea> </div> <div class="form-group"> ' +
+            '<textarea class="form-control" name="reply"  >'+owner+","+' </textarea> </div> <div class="form-group"> ' +
             '<input class="reply-btn"  type="submit"> ' +
             '</div>' +
             '</form>';
@@ -35,7 +35,7 @@ $(document).ready(function(){
             '<input type="hidden" name="comment_id" value="'+ cid +'">' +
             '<input type="hidden" name="name" value="'+rname+'">' +
             '<div class="form-group">' +
-            '<textarea class="form-control" name="reply" style="margin-top: 5px;" placeholder="Enter your reply" >' +
+            '<textarea class="form-control" name="reply" style="margin-top: 5px;"  >' +
             '</textarea> ' +
             '</div> <' +
             'div class="form-group"> ' +
@@ -51,7 +51,7 @@ $(document).ready(function(){
 
         var well = $(this).parent().parent();
 
-        if (confirm("Are you sure you want to delete this..!")) {
+        if (confirm("Вы уверены что хотите удалить это сообщение?")) {
             var did = $(this).attr("did");
             var token = $(this).attr("token");
             $.ajax({
@@ -63,9 +63,9 @@ $(document).ready(function(){
                         well.hide();
                         //alert("Your reply is deleted");
                     }else if(response == 2){
-                        alert('Oh! You can not delete other people comment');
+                        alert('Упс! Вы не можете удалить комментарий других');
                     }else{
-                        alert('Something wrong in project setup');
+                        alert('Что-то пошло не так, пожалуйста повторите попытку!');
                     }
                 }
             })

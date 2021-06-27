@@ -106,23 +106,27 @@
                             <li>Категория:</li>
                             <li><a href="#">{{$product->category->name}}</a></li>
                         </ul>
-                        <ul class="product-links">
-                            <label for="size">Размеры:</label><br>
-                            <select name="size" id="size" class="form-control">
-                                <option disabled="disabled" selected="selected" value>Выберите размер</option>
-                                @foreach($product->size as $size)
-                                    <option>{{$size}}</option>
-                                @endforeach
-                            </select>
-                        </ul>
+                        @isset($product->size)
+                            <ul class="product-links">
+                                <label for="size">Размеры:</label><br>
+                                <select name="size" id="size" class="form-control">
+                                    <option disabled="disabled" selected="selected" value>Выберите размер</option>
 
-                        <ul class="product-links">
-                            <label for="size">Цвета:</label><br>
-                            @foreach($product->color as $color)
-                                <div class="color" style="width: 50px; height: 50px; background-color: {{$color}}; float: left; margin: auto">
-                                </div>
-                            @endforeach
-                        </ul>
+                                    @foreach($product->size as $size)
+                                        <option>{{$size}}</option>
+                                    @endforeach
+                                </select>
+                            </ul>
+                        @endisset
+                        @isset($product->color)
+                            <ul class="product-links">
+                                <label for="size">Цвета:</label><br>
+                                    @foreach($product->color as $color)
+                                        <div class="color" style="width: 50px; height: 50px; background-color: {{$color}}; float: left; margin: auto">
+                                        </div>
+                                    @endforeach
+                            </ul>
+                        @endisset
                     </div>
                 </div>
                 <!-- /Product details -->
@@ -315,68 +319,7 @@
                                 <div class="products-slick" data-nav="#slick-nav-1">
                                     @foreach($products as $product)
                                         @if($category->id == $product->category_id)
-                                            <div class="col-md-4 col-xs-6" >
-                                                <div class="product">
-                                                    <div class="product-img" >
-                                                        @if(!is_null($product->image))
-                                                            <img src="{{Storage::url($product->image)}}" alt="" height="300" width="400">
-                                                        @else
-                                                            <img src="{{asset('/img/image_icon.png')}}" alt="">
-                                                        @endif
-                                                        <div class="product-label">
-                                                            @if($product->isNew())
-                                                                <span class="new">NEW</span>
-                                                                <br>
-                                                            @endif
-                                                            @if($product->isRecommend())
-                                                                <span class="recommend">Рекомендуем</span><br>
-                                                            @endif
-                                                            @if($product->isHit())
-                                                                <span class="hit">Хит продаж</span><br>
-
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-body">
-                                                        <p class="product-category">{{$product->category->name}}</p>
-                                                        <h3 class="product-name"><a href="#">{{$product->name}}</a></h3>
-                                                        <h4 class="product-price">{{$product->price}} ₸<del class="product-old-price"></del></h4>
-                                                        <div class="product-btns">
-                                                            @if(Auth::check())
-                                                                @if(( $product->likes->where('user_id',Auth::user()->id)
-                                                                ->where('likeable_id', $product->id)
-                                                                ->where('likeable_type', get_class($product))->first()) == null)
-
-                                                                    <a class="add-to-wishlist" href="{{ route('product-like', $product->id) }}"><i class="fa fa-heart-o"></i><span class="tooltipp">Лайк</span></a>
-
-                                                                @else
-                                                                    <a class="add-to-wishlist" href="{{ route('product-dislike', $product->id) }}"><i class="fa fa-heart-o"></i><span class="tooltipp">Дизлайк</span></a>
-                                                                @endif
-                                                            @else
-                                                                <a class="add-to-wishlist" href="{{ route('product-like', $product->id) }}"><i class="fa fa-heart-o"></i><span class="tooltipp">Лайк</span></a>
-                                                            @endif
-                                                            <button class="quick-view">
-                                                                <i class="fa fa-eye"></i>
-                                                                <a class="tooltipp" href="{{route('product-more', [isset($category) ? $category->code : $product->category->code, $product->slug])}}">
-                                                                    Подробнее
-                                                                </a>
-                                                            </button>
-                                                        </div>
-                                                        <li>{{$product->likes->count()}} likes</li>
-                                                    </div>
-                                                    <form action="{{ route('basket-add', $product) }}" method="POST">
-                                                        @csrf
-                                                        <div class="add-to-cart">
-                                                            @if($product->isAvailable())
-                                                                <button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>В корзину</button>
-                                                            @else
-                                                                <button type="submit" class="add-to-cart-btn" disabled><i class="fa fa-shopping-cart"></i>В корзину</button>
-                                                            @endif
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                            </div>
+                                            @include('inc.card',compact('product'))
                                         @endif
                                     @endforeach
                                 </div>

@@ -3,11 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Dish extends Model
 {
+    use SoftDeletes;
+    protected $table = 'dishes';
     protected $fillable = ['category_id','name','slug','description','image',
-        'price','user_id','count','shop_id'];
+        'price','user_id','count','restaurant_id','draft'];
 
     // Price Calculation
 
@@ -19,7 +22,10 @@ class Dish extends Model
         }
         return $this->price;
     }
-
+    public function setDraftAttribute($value)
+    {
+        $this->attributes['draft'] = $value === 'on' ? 1 : 0;
+    }
     // Eloquent connections
 
     public function category()
@@ -34,17 +40,22 @@ class Dish extends Model
 
     public function likes()
     {
-        return $this->morphMany('App\Models\Like','likeable');
+        return $this->morphMany('App\Like','likeable');
     }
 
-    public function shop()
+    public function restaurant()
     {
-        return $this->belongsTo(Shop::class);
+        return $this->belongsTo(Restaurant::class);
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function isAvailable()
+    {
+        return !$this->trashed() && $this->count > 0;
     }
 
 }

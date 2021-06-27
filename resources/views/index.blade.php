@@ -64,9 +64,15 @@
                         <div class="row">
 
                             <!-- product -->
-                            @foreach($shops as $shop)
-                                @include('inc.shopcard', compact($shop))
-                            @endforeach
+
+
+                                @foreach($shops as $shop)
+
+                                    @include('inc.shopcard', compact($shop))
+
+                                @endforeach
+
+
                             <!-- /product -->
                         </div>
                         <!-- /row -->
@@ -76,7 +82,7 @@
                 <!-- /Section -->
             </div>
             <!-- /row -->
-            {{$shops->links('pagination.index')}}
+                    {{$shops ->links('pagination.index')}}
         </div>
         <!-- /container -->
 

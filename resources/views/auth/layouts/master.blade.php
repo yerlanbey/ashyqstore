@@ -53,24 +53,18 @@
                             <li class="nav-header hidden-folded">
                                 <span class="text-xs">Создать </span>
                             </li>
-                            <li>
-                                <a href="{{route('create.index', Auth::user())}}" class="b-danger">
-                                <span class="nav-icon text-white no-fade">
-                                <i class="ion-filing"></i>
-                                </span>
+                                <a href="{{route('shop.create', Auth::user())}}" class="b-danger"  style="text-align: center">
                                     <span class="nav-text">Магазин одежды</span>
                                 </a>
-                            </li>
 
-                            <li>
-                                <a href="{{ route('market.create', Auth::user()) }}" class="b-danger">
-                                <span class="nav-icon text-white no-fade">
-                                <i class="ion-filing"></i>
-                                </span>
+                                <a href="{{ route('market.create', Auth::user()) }}" class="b-danger"  style="text-align: center">
                                     <span class="nav-text">Продуктовый магазин</span>
                                 </a>
-                            </li>
 
+
+                                <a href="{{ route('restaurant.create', Auth::user()) }}" class="b-danger"  style="text-align: center">
+                                    <span class="nav-text">Заведение</span>
+                                </a>
                         <li class="nav-header hidden-folded m-t">
                             <span class="text-xs">Панель управления</span>
                         </li>
@@ -82,15 +76,30 @@
                                 <span class="nav-icon">
                                 <i class="ion-ios-photos"></i>
                                 </span>
-                                <span class="nav-text">Мои заведений</span>
+                                <span class="nav-text">Мои проекты</span>
                             </a>
                             @endif
                             <ul class="nav-sub nav-mega">
                                 @foreach(Auth::user()->shops as $shop)
-
                                     <li>
-                                        <a href="{{ route('company.get', $shop->id) }}" >
+                                        <a href="{{ route('product.index', $shop->slug) }}" >
                                             <span class="nav-text">{{$shop->name}}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+
+                                @foreach(Auth::user()->markets as $market)
+                                    <li>
+                                        <a href="{{ route('food.index', $market->slug) }}"  >
+                                            <span class="nav-text">{{$market->name}}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+
+                                @foreach(Auth::user()->restaurants as $restaurant)
+                                    <li>
+                                        <a href="{{ route('dish.index', $restaurant->slug) }}"  >
+                                            <span class="nav-text">{{$restaurant->name}}</span>
                                         </a>
                                     </li>
                                 @endforeach

@@ -8,6 +8,7 @@ use App\Product;
 class Order extends Model
 {
   protected $fillable = ['user_id'];
+
   public function products()
   {
     return $this->belongsToMany(Product::class)->withPivot(['count','admin_id'])->withTimestamps();

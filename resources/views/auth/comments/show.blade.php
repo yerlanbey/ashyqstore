@@ -7,7 +7,7 @@
 @section('content-section')
     <div class="container">
         <div class="col-md-12">
-            <h1>Комментарий <b>{{ $comment->id }}</b></h1>
+            <h1>Комментарий <b>{{ $comment->IsUser->name }}</b></h1>
             <table class="table">
                 <tbody>
                 <tr>

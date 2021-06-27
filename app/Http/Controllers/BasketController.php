@@ -11,11 +11,13 @@ use App\Http\Requests\OrderRequest;
 class BasketController extends Controller
 
 {
-   public function BasketChecking(){
+   public function BasketChecking()
+   {
      $order = (new Basket())->getOrder();
      return view('basket',compact('order'));
    }
-   public function OrderConfirm(OrderRequest $request){
+   public function OrderConfirm(Request $request)
+   {
        foreach (['payment_spot','payment_transfer'] as $fieldQuery){
            if (isset($request[$fieldQuery])){
                $request[$fieldQuery] = 1;
@@ -24,8 +26,6 @@ class BasketController extends Controller
            }
        }
      $email = Auth::check() ? Auth::user()->email : $request->email;
-     //проверяем зареганный ли пользователь или нет если зареган получаем его
-       // имэйл если нет то те данные который передал пользователь
      $success = (new Basket())->
      saveOrder($request->name, $request->phone, $request->address, $request->comment,
          $request->apartment,$request->floor,

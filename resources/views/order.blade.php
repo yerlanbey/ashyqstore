@@ -9,22 +9,37 @@
     <div class="section">
         <!-- container -->
         <div class="container">
+            <div style="text-align: center">
+                @if(session()->has('success'))
+                    <p class="alert alert-success">{{ session()->get('success') }}</p>
+                @elseif(session()->has('warning'))
+                    <p class="alert alert-warning">{{ session()->get('warning') }}</p>
+                @endif
+            </div>
             <!-- row -->
             <div class="row">
 
                 <div class="col-md-7">
-                    <form action="{{ route('order-confirm') }}" method="POST">
+                    <form action="{{ route('order-confirm') }}" method="POST" enctype="multipart/form-data">
                         <!-- Подтвердите заказ -->
                         <div class="billing-details">
                             <div class="section-title">
                                 <h3 class="title">Подтвердите заказ:</h3>
                             </div>
                             <p>Укажите свое имя и номер телефона, чтобы менеджеры могли с вами связаться:</p>
-                            <p><b>Ваши данные </p>
+                            <p style="font-size: 30px;"><b>Ваши данные </p>
+                            @if(Auth::check())
                             <div class="form-group">
                                 @include('auth.layouts.error', ['key' => 'name'])
-                                <input class="input" type="text" name="name" id="name" placeholder="Ф.И.О">
+                                <input class="hidden" type="text" name="name" id="name" value="{{Auth::user()->name}}">
                             </div>
+                            @else
+                                <div class="form-group">
+                                    @include('auth.layouts.error', ['key' => 'name'])
+                                    <input class="input" type="text" name="name" id="name" placeholder="Ф.И.О">
+                                </div>
+                            @endif
+
                             <div class="form-group">
                                 @include('auth.layouts.error', ['key' => 'phone'])
                                 <label for="">Контактный номер</label>

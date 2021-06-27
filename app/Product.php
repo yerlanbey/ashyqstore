@@ -11,7 +11,7 @@ class Product extends Model
 
     use SoftDeletes, Sluggable;
     protected $fillable = ['name','slug','category_id','description','image','price',
-        'hit','new','recommend','sales','size','color','user_id','count','shop_id'];
+        'hit','new','recommend','draft','sales','size','color','user_id','count','shop_id'];
 
     protected $casts = [
         'color' => 'array',
@@ -26,7 +26,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function photos()
@@ -50,6 +50,10 @@ class Product extends Model
     }
 
     // Mutator's
+    public function setDraftAttribute($value)
+    {
+        $this->attributes['draft'] = $value === 'on' ? 1 : 0;
+    }
 
     public function setNewAttribute($value)
     {
@@ -65,12 +69,6 @@ class Product extends Model
     {
         $this->attributes['recommend'] = $value === 'on' ? 1 : 0;
     }
-
-    public function setDraftAttribute($value)
-    {
-        $this->attributes['draft'] = $value === 'on' ? 1 : 0;
-    }
-
 
     // Checking
 

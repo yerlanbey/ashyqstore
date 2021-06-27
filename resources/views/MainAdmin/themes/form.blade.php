@@ -34,23 +34,24 @@
                     @endisset
                     @csrf
                     <br>
-                    <div class="input-group row">
-                        <label for="code" class="col-sm-2 col-form-label">Код: </label>
-                        <div class="col-sm-6">
-                            @include('auth.layouts.error', ['key' => 'code'])
-                            <input type="text" class="form-control" name="code" id="code"
-                                   value="{{ old('code', isset($theme) ? $theme->code : null) }}">
+                        <div class="input-group row">
+                            <label for="name" class="col-sm-2 col-form-label">Название: </label>
+                            <div class="col-sm-6">
+                                @include('auth.layouts.error', ['key' => 'name'])
+                                <input type="text" class="form-control" name="name" id="name"
+                                       value="@isset($theme){{$theme->name}}@endisset">
+                            </div>
                         </div>
-                    </div>
+
                     <br>
-                    <div class="input-group row">
-                        <label for="name" class="col-sm-2 col-form-label">Название: </label>
-                        <div class="col-sm-6">
-                            @include('auth.layouts.error', ['key' => 'name'])
-                            <input type="text" class="form-control" name="name" id="name"
-                                   value="@isset($theme){{$theme->name}}@endisset">
+                        <div class="input-group row">
+                            <label for="code" class="col-sm-2 col-form-label">Код: </label>
+                            <div class="col-sm-6">
+                                @include('auth.layouts.error', ['key' => 'code'])
+                                <input type="text" class="form-control" name="code" id="code"
+                                       value="{{ old('code', isset($theme) ? $theme->code : null) }}">
+                            </div>
                         </div>
-                    </div>
 
                     <br>
                     <div class="input-group row">
@@ -69,4 +70,20 @@
             </form>
         </div>
     </div>
+
+
+    <script src = "// code.jquery.com/jquery-1.11.2.min.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type = "text/javascript"></script>
+
+
+    <script>
+        $('#name').change(function(e) {
+            $.get('{{ route('theme.checkSlug') }}',
+                { 'name': $(this).val() },
+                function( data ) {
+                    $('#code').val(data.slug);
+                }
+            );
+        });
+    </script>
 @endsection

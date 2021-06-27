@@ -15,7 +15,9 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('product_code');
+            $table->string('product_code')->nullable();
+            $table->string('food_code')->nullable();
+            $table->string('dish_code')->nullable();
             $table->string('name');
             $table->text('comment')->nullable();
             $table->tinyInteger('user_id')->nullable();
@@ -30,6 +32,13 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::create('comments', function (Blueprint $table) {
+            $table->dropColumn('product_code');
+            $table->dropColumn('food_code');
+            $table->dropColumn('dish_code');
+            $table->dropColumn('name');
+            $table->dropColumn('comment');
+            $table->dropColumn('user_id');
+        });
     }
 }

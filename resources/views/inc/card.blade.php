@@ -10,17 +10,23 @@
                 <img src="{{asset('/img/image_icon.png')}}" alt="" height="300" width="400">
             @endif
             <div class="product-label">
-                @if($product->isNew())
-                    <span class="new">NEW</span>
-                    <br>
-                @endif
-                @if($product->isRecommend())
-                    <span class="recommend">Рекомендуем</span><br>
-                @endif
-                @if($product->isHit())
-                    <span class="hit">Хит продаж</span><br>
 
-                @endif
+                @isset($product->new)
+                    @if($product->isNew())
+                        <span class="new">NEW</span>
+                        <br>
+                    @endif
+                @endisset
+                @isset($product->recommend)
+                    @if($product->isRecommend())
+                        <span class="recommend">Рекомендуем</span><br>
+                    @endif
+                @endisset
+                @isset($product->hit)
+                    @if($product->isHit())
+                        <span class="hit">Хит продаж</span><br>
+                    @endif
+                @endisset
             </div>
         </div>
         <div class="product-body" style="height: 200px;">

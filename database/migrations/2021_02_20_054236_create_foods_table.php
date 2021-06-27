@@ -23,7 +23,7 @@ class CreateFoodsTable extends Migration
             $table->double('price')->default(0);
             $table->integer('user_id');
             $table->unsignedInteger('count')->default(0);
-            $table->integer('shop_id');
+            $table->integer('market_id');
             $table->tinyInteger('draft')->default(0);
             $table->softDeletes();
             $table->timestamps();

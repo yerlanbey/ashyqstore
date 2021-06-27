@@ -6,7 +6,6 @@ Auth::routes([
     'verify' => true,
 ]);
 
-
 //Клиентский функционал
 Route::get('/logout','Auth\LoginController@logout')->name('get-logout');
 Route::get('/reset','ResetController@reset')->name('reset');
@@ -30,20 +29,23 @@ Route::group([
 'prefix' => 'mainAdmin',
 ], function() {
 Route::group(['middleware'=>'mainadmin'], function(){
+    Route::get('/theme/check-slug', 'ThemeController@checkSlug')->name('theme.checkSlug');
+    Route::resource('user','UserController');
+    Route::resource('mainproducts', 'MainProductController');
+    Route::resource('maincategory', 'MainCategoryController');
+    Route::resource('shops', 'ShopController');
+    Route::resource('devcomments', 'CommentController');
+    Route::resource('themes', 'ThemeController');
+    Route::get('cooperations/get','CooperationController@showCooperations')->name('index.cooperation');
+    Route::get('colors/','ColorController@index')->name('color.index');
+    Route::get('colors/create','ColorController@create')->name('color.create');
+    Route::post('colors/store','ColorController@store')->name('color.store');
+    Route::get('colors/edit','ColorController@edit')->name('color.edit');
+    Route::post('colors/update','ColorController@update')->name('color.update');
+    Route::post('colors/{colorId}/delete','ColorController@delete')->name('color.delete');
 
-Route::resource('user','UserController');
-Route::resource('mainproducts', 'MainProductController');
-Route::resource('maincategory', 'MainCategoryController');
-Route::resource('shops', 'ShopController');
-Route::resource('devcomments', 'CommentController');
-Route::resource('themes', 'ThemeController');
-Route::get('cooperations/get','CooperationController@showCooperations')->name('index.cooperation');
-Route::get('colors/','ColorController@index')->name('color.index');
-Route::get('colors/create','ColorController@create')->name('color.create');
-Route::post('colors/store','ColorController@store')->name('color.store');
-Route::get('colors/edit','ColorController@edit')->name('color.edit');
-Route::post('colors/update','ColorController@update')->name('color.update');
-Route::post('colors/{colorId}/delete','ColorController@delete')->name('color.delete');
+Route::get('/category/check-slug', 'MainCategoryController@checkSlug')->name('category.checkSlug');
+
 
 
 //Поисковик
@@ -62,59 +64,79 @@ Route::group([
 'namespace' => 'Admin',
 'prefix' => 'admin',
 ], function() {
-Route::group(['middleware'=>'is_admin'], function(){
-Route::get('/orders', 'OrderController@AdminHome')->name('home');
-Route::get('/orders/{order}', 'OrderController@show')->name('orders.show');
-Route::get('/creating/{userId}', 'ShopController@create')->name('create.index');
-Route::post('/store','ShopController@storeData')->name('store.shop');
-Route::get('/organization/{companyId}','ShopController@getProduct')->name('company.get');
-Route::get('/organization/{companyId}/create/','ShopController@createProduct')->name('company.create');
-Route::post('/organization/store/product', 'ShopController@storeProduct')->name('company.store');
-Route::get('/product/check-slug', 'ShopController@checkSlug')->name('product.checkSlug');
-Route::get('/market/check-slug', 'MarketController@checkSlug')->name('market.checkSlug');
-Route::get('/market/create/{id}', 'MarketController@create')->name('market.create');
+Route::group(['middleware'=>'is_admin'], function()
+{
 
-Route::resource('categories','CategoryController');
-Route::resource('products','ProductController');
-Route::resource('photos','PhotoController');
-Route::resource('comments','CommentController');
+    Route::get('/restaurant/check-slug/', 'RestaurantController@checkSlug')->name('restaurant.checkSlug');
+    Route::get('/product/check-slug/', 'ShopController@checkSlug')->name('product.checkSlug');
+    Route::get('/market/check-slug/', 'MarketController@checkSlug')->name('market.checkSlug');
+
+    Route::get('/orders/', 'OrderController@AdminHome')->name('home');
+    Route::get('/orders/{order}/', 'OrderController@show')->name('orders.show');
+
+    Route::get('/product/{shopId}/index','ShopController@getProduct')->name('product.index');
+    Route::get('/product/{shopId}/create/','ShopController@createProduct')->name('product.create');
+    Route::post('/product/store/', 'ShopController@storeProduct')->name('product.store');
+
+    Route::get('/food/{marketSlug}/index','MarketController@indexFood')->name('food.index');
+    Route::get('/food/{marketSlug}/create/','MarketController@createFood')->name('food.create');
+    Route::post('/food/store/', 'MarketController@storeFood')->name('food.store');
+    Route::delete('/food/{foodSlug}/delete', 'MarketController@destroyFood')->name('food.destroy');
+    Route::get('/food/{foodSlug}/edit', 'MarketController@foodEdit')->name('food.edit');
+    Route::post('/food/{foodSlug}/update', 'MarketController@foodUpdate')->name('food.update');
+
+    Route::get('/dish/{restaurantSlug}/index', 'RestaurantController@indexDish')->name('dish.index');
+    Route::get('/dish/{restaurantSlug}/create', 'RestaurantController@createFood')->name('dish.create');
+    Route::post('/dish/store/', 'RestaurantController@storeDish')->name('dish.store');
+    Route::delete('/dish/{restaurantSlug}/delete', 'RestaurantController@destroyDish')->name('dish.destroy');
+    Route::get('/dish/{restaurantSlug}/edit', 'RestaurantController@dishEdit')->name('dish.edit');
+    Route::post('/dish/{restaurantSlug}/update', 'RestaurantController@dishUpdate')->name('dish.update');
+
+    Route::get('/shop/{userId}/', 'ShopController@create')->name('shop.create');
+    Route::post('shop/store/','ShopController@storeData')->name('store.shop');
 
 
-});
-});
+
+    Route::get('/market/{userId}/', 'MarketController@createMarket')->name('market.create');
+    Route::post('/market/store/', 'MarketController@storeMarket')->name('market.store');
+
+    Route::get('/restaurant/{userId}/', 'RestaurantController@create')->name('restaurant.create');
+    Route::post('/restaurant/store/', 'RestaurantController@storeRestaurant')->name('restaurant.store');
+
+
+
+    Route::resource('categories','CategoryController');
+    Route::resource('products','ProductController');
+    Route::resource('photos','PhotoController');
+    Route::resource('comments','CommentController');
+
+        });
+    });
 });
 
 //Работа с корзиной
 Route::post('/add/{id}','BasketController@basketAdd')->name('basket-add');
 Route::group(['prefix'=>'basket'], function(){
-Route::post('/add/{product}','BasketController@basketAdd')->name('basket-add');
-Route::group([
-    'middleware'=>'not_empty_basket'
+    Route::post('/add/{product}','BasketController@basketAdd')->name('basket-add');
+    Route::group([
+        'middleware'=>'not_empty_basket'
     ], function(){
-Route::get('/','BasketController@BasketChecking')->name('basket-check');
-Route::get('/place','BasketController@OrderArrange')->name('order-arrange');
-Route::post('/place','BasketController@OrderConfirm')->name('order-confirm');
-Route::post('/remove/{product}','BasketController@basketRemove')->name('basket-remove');
+        Route::get('/','BasketController@BasketChecking')->name('basket-check');
+        Route::get('/place','BasketController@OrderArrange')->name('order-arrange');
+        Route::post('/place','BasketController@OrderConfirm')->name('order-confirm');
+        Route::post('/remove/{product}','BasketController@basketRemove')->name('basket-remove');
     });
 });
 
-Route::group([
-'middleware'=>'not_empty_basket',
-'prefix' => 'basket'], function(){
-Route::get('/','BasketController@BasketChecking')->name('basket-check');
-Route::get('/place','BasketController@OrderArrange')->name('order-arrange');
-Route::post('/place','BasketController@OrderConfirm')->name('order-confirm');
-Route::post('/remove/{id}','BasketController@basketRemove')->name('basket-remove');
-});
 //Подписатья на продукт если продукт нет в наличий
 Route::post('/subscribtion/{product}','MainController@SubscribtionForm')->name('subscribe');
 
 //Профайл routes
 Route::group(['middleware' => 'auth'], function(){
-Route::get('/profile/{userId}', 'ProfileController@showProfile')->name('profile.show');
-Route::get('/profile/{userId}/edit', 'ProfileController@editProfile')->name('profile.edit');
-Route::patch('/profile/{userId}/update', 'ProfileController@updateProfile')->name('profile.update');
-Route::get('/chosen/{userId}','ProfileController@chosen')->name('chosen');
+    Route::get('/profile/{userId}', 'ProfileController@showProfile')->name('profile.show');
+    Route::get('/profile/{userId}/edit', 'ProfileController@editProfile')->name('profile.edit');
+    Route::patch('/profile/{userId}/update', 'ProfileController@updateProfile')->name('profile.update');
+    Route::get('/chosen/{userId}','ProfileController@chosen')->name('chosen');
 });
 
 
@@ -137,10 +159,12 @@ Route::get('/search/comment', 'SearchController@searchComment')->name('comment.s
 
 //Продукты по котегориям
 Route::get('/{category?}','MainController@CategoryShow')->name('category');
+Route::get('{ParentParentCategory?}/{ParentCategory?}/{childCategory1?}','MainController@ChildCategoryShow')->name('childCategory1');
+
 
 
 //Страница продукта
-Route::get('/{category?}/{product?}','MainController@ProductChecking')->name('product-more');
+Route::get('/{category?}/{product?}','MainController@ProductPage')->name('product-more');
 
 
 Route::get('/order/{id}/delete','BasketController@OrderDelete')->name('order-delete');
@@ -155,6 +179,5 @@ Route::get('/comment/{commentId}/delete','CommentController@destroyComment')->na
 
 Route::post('/reply/{commentId}', 'RepliesController@storeReply')->middleware('auth')->name('reply.store');
 Route::delete('/reply/{replyId}/delete', 'RepliesController@destroyReply')->middleware('auth')->name('reply.destroy');
-
 
 

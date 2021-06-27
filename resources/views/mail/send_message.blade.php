@@ -57,7 +57,7 @@
                     <img height="56px" src="{{ Storage::url($product->image)}} ">
                 </td>
                 <td>
-                    <a href="{{ route('product-more',[$product->category->code, $product->code]) }}">
+                    <a href="{{route('product-more', [isset($category) ? $category->code : $product->category->code, $product->slug])}}">
                         {{$product->name}}
                     </a>
                 </td>

@@ -18,7 +18,8 @@ class Basket{
 
     if (is_null($orderId) && $orderIsCreate){
       $user = [];
-      if(Auth::check()){
+      if(Auth::check())
+      {
         $user['user_id'] = Auth::id();
       }
       $this->order = Order::create($user);
@@ -105,7 +106,7 @@ class Basket{
       if($product->count == 0){
         return false;
       }
-      $this->order->products()->attach($product->id, ['admin_id'=>$product->admin_id]);
+      $this->order->products()->attach($product->id, ['admin_id'=>$product->user_id]);
     }
     return true;
   }

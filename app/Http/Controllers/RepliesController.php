@@ -18,7 +18,7 @@ class RepliesController extends Controller
                 'user_id' => Auth::user()->id
             ]);
 
-            return redirect()->route('product-more')->with('success','Вы успешно ответили на сообщение');
+            return redirect()->back()->with('success','Вы успешно ответили на сообщение');
         }
 
         return back()->withInput()->with('error','Что-то пошло не так, повторите!');

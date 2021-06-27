@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\mainAdmin;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Theme;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 
 class ThemeController extends Controller
@@ -89,6 +91,12 @@ class ThemeController extends Controller
     {
         $theme = Theme::find($themeId);
         $theme->delete();
-        return redirect()->back();  
+        return redirect()->back();
+    }
+
+    public function checkSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Theme::class, 'code', $request->name);
+        return response()->json(['slug' => $slug]);
     }
 }
