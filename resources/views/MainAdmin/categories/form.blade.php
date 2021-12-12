@@ -79,8 +79,7 @@
                                 @error('description')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                                <textarea name="description" id="description" cols="72"  rows="5">@isset($category){{ $category->description }}@endisset
-                                </textarea>
+                                <textarea name="description" id="description" cols="72"  rows="5"></textarea>
                             </div>
                         </div>
                     <br>

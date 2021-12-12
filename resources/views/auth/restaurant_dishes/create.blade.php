@@ -13,7 +13,7 @@
 
         <div class="col-md-12">
 
-            <h1>Добавить блюдо</h1>
+            <h1>Добавить блюдо в меню</h1>
 
             <form method="POST" enctype="multipart/form-data" action="{{route('dish.store')}}">
                 <div>

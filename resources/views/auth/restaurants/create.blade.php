@@ -19,22 +19,19 @@
                         <p class="alert alert-warning">{{ session()->get('warning') }}</p>
                     @endif
                     <div class="form-group row">
-                        <label for="name" class="col-sm-2 form-control-label">Название магазина</label>
+                        <label for="name" class="col-sm-2 form-control-label">Название Заведение</label>
                         <div class="col-sm-9">
                             @include('auth.layouts.error', ['key' => 'name'])
                             <input type="text" name="name" id="name" class="form-control rounded">
                         </div>
                     </div>
-
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="slug">Код магазина</label>
+                        <label class="col-sm-2 form-control-label" for="slug">Код Заведение</label>
                         <div class="col-sm-9">
                             @include('auth.layouts.error', ['key' => 'slug'])
                             <input type="text" name="slug" id="slug" class="form-control rounded">
                         </div>
                     </div>
-
-
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="work_time">Время работы:</label>
                         <div class="col-sm-9">
@@ -42,18 +39,12 @@
                             <select name="work_time" id="work_time" class="form-control">
                                 <option disabled="disabled" selected="selected" value>Выберите время</option>
                                 <option>24 часа</option>
-                                <option> 09:00 - 23:00</option>
-                                <option> 09:00 - 00:00</option>
-                                <option> 09:00 - 01:00</option>
-                                <option> 09:00 - 02:00</option>
-                                <option> 10:00 - 23:00</option>
-                                <option> 10:00 - 00:00</option>
-                                <option> 10:00 - 01:00</option>
+                                @foreach($times as $time)
+                                    <option value="">{{ $time }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
-
-
                     <div class="form-group row">
                         <label for="address" class="col-sm-2 form-control-label">Адрес</label>
                         <div class="col-sm-9">
@@ -61,7 +52,6 @@
                             <input type="text" name="address" id="address" class="form-control rounded">
                         </div>
                     </div>
-
                     <div class="form-group row">
                         <label for="phone" class="col-sm-2 form-control-label">Контактные данные</label>
                         <div class="col-sm-9">
@@ -69,17 +59,14 @@
                             <input type="text" name="phone" id="phone" class="form-control rounded">
                         </div>
                     </div>
-
                     <div class="form-group row">
                         <div class="col-sm-9">
                             <input type="hidden" class="form-control rounded" name="user_id" id="user_id"
                                    value="{{$userId->id}}">
-
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">Тип магазина</label>
-
+                        <label class="col-sm-2 form-control-label">Тип Заведение</label>
                         <div class="col-sm-9">
                             @include('auth.layouts.error', ['key' => 'theme_code'])
                             <select name="theme_code" id="theme_code" class="form-control input-c rounded" >
@@ -91,7 +78,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="input-group row">
                         <label for="image" class="col-sm-2 col-form-label">Картинка: </label>
                         <div class="col-sm-10">
@@ -100,15 +86,12 @@
                             </label>
                         </div>
                     </div>
-
                     <div class=" p-a text-right">
                         <button type="submit" class="btn success">Создать</button>
                     </div>
-
                 </div>
             </div>
         </form>
-
     </div>
 
     <script src = "// code.jquery.com/jquery-1.11.2.min.js"> </script>
@@ -125,7 +108,6 @@
                 $select2.find('option').prop('selected', '')
                 $select2.trigger('change')
             })
-
             $('.select2').select2()
         });
 

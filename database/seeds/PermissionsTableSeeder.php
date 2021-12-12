@@ -99,7 +99,7 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => '22',
-                'title' => 'shop_products',
+                'title' => 'shop_create',
             ],
             [
                 'id'    => '23',
@@ -131,7 +131,7 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => '30',
-                'title' => 'product_show',
+                'title' => 'product_delete',
             ],
             [
                 'id'    => '31',
@@ -217,6 +217,172 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => '51',
                 'title' => 'restaurant_access',
             ],
+            [
+                'id' => '52',
+                'title' => 'cooperation_show',
+            ],
+            [
+                'id' => '53',
+                'title' => 'comment_creat'
+            ],
+            [
+                'id' => '54',
+                'title' => 'comment_edit'
+            ],
+            [
+                'id' => '55',
+                'title' => 'comment_show'
+            ],
+            [
+                'id' => '56',
+                'title' => 'comment_delete'
+            ],
+            [
+                'id' => '57',
+                'title' => 'comment_access'
+            ],
+            [
+                'id' => '58',
+                'title' => 'category_create'
+            ],
+            [
+                'id' => '59',
+                'title' => 'category_edit'
+            ],
+            [
+                'id' => '60',
+                'title' => 'category_show'
+            ],
+            [
+                'id' => '61',
+                'title' => 'category_delete'
+            ],
+            [
+                'id' => '62',
+                'title' => 'category_access'
+            ],
+            [
+                'id' => '63',
+                'title' => 'color_creat'
+            ],
+            [
+                'id' => '64',
+                'title' => 'color_edit'
+            ],
+            [
+                'id' => '65',
+                'title' => 'color_show'
+            ],
+            [
+                'id' => '66',
+                'title' => 'color_delete'
+            ],
+            [
+                'id' => '67',
+                'title' => 'color_access'
+            ],
+            [
+                'id' => '68',
+                'title' => 'organization_category_create'
+            ],
+            [
+                'id' => '69',
+                'title' => 'organization_category_edit'
+            ],
+            [
+                'id' => '70',
+                'title' => 'organization_category_show'
+            ],
+            [
+                'id' => '71',
+                'title' => 'organization_category_delete'
+            ],
+            [
+                'id' => '72',
+                'title' => 'organization_category_access'
+            ],
+            [
+                'id' => '73',
+                'title' => 'order_create'
+            ],
+            [
+                'id' => '74',
+                'title' => 'order_edit'
+            ],
+            [
+                'id' => '75',
+                'title' => 'order_delete'
+            ],
+            [
+                'id' => '76',
+                'title' => 'order_show'
+            ],
+            [
+                'id' => '77',
+                'title' => 'order_access'
+            ],
+            [
+                'id' => '78',
+                'title' => 'theme_create'
+            ],
+            [
+                'id' => '79',
+                'title' => 'theme_edit'
+            ],
+            [
+                'id' => '80',
+                'title' => 'theme_delete'
+            ],
+            [
+                'id' => '81',
+                'title' => 'theme_show'
+            ],
+            [
+                'id' => '82',
+                'title' => 'theme_access'
+            ],
+            [
+                'id' => '83',
+                'title' => 'photo_create'
+            ],
+            [
+                'id' => '84',
+                'title' => 'photo_edit'
+            ],
+            [
+                'id' => '85',
+                'title' => 'photo_delete'
+            ],
+            [
+                'id' => '86',
+                'title' => 'photo_show'
+            ],
+            [
+                'id' => '87',
+                'title' => 'photo_access'
+            ],
+            [
+                'id' => '88',
+                'title' => 'reply_create'
+            ],
+            [
+                'id' => '89',
+                'title' => 'reply_edit'
+            ],
+            [
+                'id' => '90',
+                'title' => 'reply_delete'
+            ],
+            [
+                'id' => '91',
+                'title' => 'reply_show'
+            ],
+            [
+                'id' => '92',
+                'title' => 'access'
+            ],
+
+
         ];
 
         Permission::insert($permissions);

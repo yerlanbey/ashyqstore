@@ -6,7 +6,10 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use App\Theme;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class ThemeController extends Controller
 {
@@ -17,6 +20,8 @@ class ThemeController extends Controller
      */
     public function index()
     {
+        abort_if(Gate::denies('theme_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $themes = Theme::paginate(20);
         return view('MainAdmin.themes.index', compact('themes'));
     }
@@ -28,6 +33,8 @@ class ThemeController extends Controller
      */
     public function create()
     {
+        abort_if(Gate::denies('theme_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return view('MainAdmin.themes.form');
     }
 
@@ -52,6 +59,8 @@ class ThemeController extends Controller
      */
     public function show(Theme $theme)
     {
+        abort_if(Gate::denies('theme_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return view('MainAdmin.themes.show', compact('theme'));
     }
 
@@ -63,6 +72,8 @@ class ThemeController extends Controller
      */
     public function edit(Theme $theme)
     {
+        abort_if(Gate::denies('theme_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return view('MainAdmin.themes.form', compact('theme'));
     }
 
@@ -89,6 +100,8 @@ class ThemeController extends Controller
      */
     public function destroy($themeId)
     {
+        abort_if(Gate::denies('theme_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $theme = Theme::find($themeId);
         $theme->delete();
         return redirect()->back();

@@ -11,17 +11,20 @@ use App\Restaurant;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Faker\Provider\Company;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Shop;
 use App\Theme;
 use App\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShopController extends Controller
 {
     public function create(User $userId)
     {
+        abort_if(Gate::denies('shop_create'), Response::HTTP_FORBIDDEN, 403);
         $themes = Theme::all();
         return view('auth.shops.index',compact('userId','themes'));
     }
@@ -43,18 +46,17 @@ class ShopController extends Controller
 
     public function getProduct($companyId)
     {
-        if(Auth::user()->isAdmin()){
 
-            $shop = Shop::where('slug',$companyId)->first();
-            $products = $shop->products;
-
-        }
+        abort_if(Gate::denies('shop_access'), Response::HTTP_FORBIDDEN,403);
+        $shop = Shop::where('slug',$companyId)->firstOrFail();
+        $products = $shop->products;
         return view('auth.shop_products.index',compact('products','shop'));
     }
 
     public function createProduct($companyId)
     {
 
+        abort_if(Gate::denies('product_create'), Response::HTTP_FORBIDDEN, 403);
         $company = Shop::find($companyId);
         $categories = Category::all();
         $colors = Color::all()->pluck('code','name');

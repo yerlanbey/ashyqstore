@@ -21,11 +21,12 @@ class   Subscribtion extends Model
 
     public static function sendEmailAfterSubscribtion(Product $product)
     {
-          $subscriptions = self::ActiveByProductId($product->id)->get();
-      foreach($subscriptions as $subscription){
-        Mail::to($subscription->email)->send(new SendSubscriptionMessage($product));
-        $subscription->status = 1;
-        $subscription->save();
-    }
+      $subscriptions = self::ActiveByProductId($product->id)->get();
+      foreach($subscriptions as $subscription)
+        {
+            Mail::to($subscription->email)->send(new SendSubscriptionMessage($product));
+            $subscription->status = 1;
+            $subscription->save();
+        }
   }
 }

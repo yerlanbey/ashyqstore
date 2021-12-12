@@ -69,7 +69,7 @@
             @isset($restaurant)
                 <a class="btn btn-success" type="button"
                    href="{{ route('dish.create', $restaurant) }}">
-                    Добавить блюдо
+                    Добавить блюдо в меню
                 </a>
             @endisset
         </div>

@@ -19,9 +19,9 @@ class Basket{
     if (is_null($orderId) && $orderIsCreate){
       $user = [];
       if(Auth::check())
-      {
+        {
         $user['user_id'] = Auth::id();
-      }
+         }
       $this->order = Order::create($user);
       session(['orderId'=>$this->order->id]);
     } else {
@@ -44,7 +44,7 @@ class Basket{
   {
     foreach($this->order->products as $orderWithProduct) {
       if($orderWithProduct->count < $this->getPivot($orderWithProduct)->count){
-      return false;
+        return false;
       }
       if($updateCount) {
         // Минусуем из общего числа продукта

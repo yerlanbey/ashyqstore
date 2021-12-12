@@ -8,6 +8,11 @@
 <div class="container">
     <div class="col-md-12">
         <h1>Пользователи</h1>
+        @if(session()->has('success'))
+            <p class="alert alert-success">{{ session()->get('success') }}</p>
+        @elseif(session()->has('warning'))
+            <p class="alert alert-warning">{{ session()->get('warning') }}</p>
+        @endif
         <form action="{{route('search.user')}}" method="GET" enctype="multipart/form-data">
             @csrf
             <div class="row p-a">
@@ -36,7 +41,9 @@
                 <th>
                     Примущество
                 </th>
-
+                <th>
+                    Роль
+                </th>
                 <th>
                     Действия
                 </th>
@@ -52,6 +59,11 @@
                         @else
                             <td>Пользователь</td>
                         @endif
+                        <td>
+                            @foreach($user->roles as $key => $item)
+                                <span class="badge badge-primary">{{ $item->title }}</span>
+                            @endforeach
+                        </td>
                         <td>
                             <div class="btn-group" role="group">
                                 <form action="{{ route('user.destroy', $user) }}" method="POST">

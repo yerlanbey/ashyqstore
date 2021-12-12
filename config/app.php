@@ -228,5 +228,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
+    'time' => [
+        'start_time' => '09:00',
+        'end_time' => '00:00',
+    ],
 ];

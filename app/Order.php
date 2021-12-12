@@ -13,7 +13,7 @@ class Order extends Model
   {
     return $this->belongsToMany(Product::class)->withPivot(['count','admin_id'])->withTimestamps();
   }
-  public function getFullPrice(){
+  public function  getFullPrice(){
     $sum=0;
     foreach ($this->products()->withTrashed()->get() as $product) {
       if(Auth::check() && Auth::user()->isAdmin()){

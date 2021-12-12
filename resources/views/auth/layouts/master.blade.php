@@ -29,46 +29,44 @@
 <body>
 
 <div class="app" id="app">
-
-    <!-- ############ LAYOUT START-->
-
-    <!-- aside -->
     <div id="aside" class="app-aside fade nav-dropdown black">
-        <!-- fluid app aside -->
+
         <div class="navside dk" data-layout="column">
             <div class="navbar no-radius">
-                <!-- brand -->
                 <a href="{{ route('index-html') }}" class="navbar-brand">
                     <div data-ui-include="'images/logo.svg'"></div>
                     <img src="images/logo.png" alt="." class="hide">
                     <span class="hidden-folded inline">ASHYQSTORE</span>
                 </a>
-                <!-- / brand -->
             </div>
             <div data-flex class="hide-scroll">
                 <nav class="scroll nav-stacked nav-stacked-rounded nav-color">
-
                     <ul class="nav" data-ui-nav>
-                        @if(Auth::user()->isAdmin())
+                        @if(app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('shop_create') || app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('market_create') || app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('restaurant_create'))
                             <li class="nav-header hidden-folded">
                                 <span class="text-xs">Создать </span>
                             </li>
-                                <a href="{{route('shop.create', Auth::user())}}" class="b-danger"  style="text-align: center">
-                                    <span class="nav-text">Магазин одежды</span>
-                                </a>
-
-                                <a href="{{ route('market.create', Auth::user()) }}" class="b-danger"  style="text-align: center">
-                                    <span class="nav-text">Продуктовый магазин</span>
-                                </a>
-
-
-                                <a href="{{ route('restaurant.create', Auth::user()) }}" class="b-danger"  style="text-align: center">
-                                    <span class="nav-text">Заведение</span>
-                                </a>
+                        @endif
+                        @can('shop_create')
+                            <a href="{{route('shop.create', Auth::user())}}" class="b-danger"  style="text-align: center">
+                                <span class="nav-text">Магазин одежды</span>
+                            </a>
+                        @endcan
+                        @can('market_create')
+                            <a href="{{ route('market.create', Auth::user()) }}" class="b-danger"  style="text-align: center">
+                                <span class="nav-text">Продуктовый магазин</span>
+                            </a>
+                        @endcan
+                        @can('restaurant_create')
+                            <a href="{{ route('restaurant.create', Auth::user()) }}" class="b-danger"  style="text-align: center">
+                                <span class="nav-text">Заведение</span>
+                            </a>
+                        @endcan
                         <li class="nav-header hidden-folded m-t">
                             <span class="text-xs">Панель управления</span>
                         </li>
-                        <li>
+                        @if(app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('shop_create') || app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('market_create') || app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('restaurant_create'))
+                            <li>
                             <a>
                             <span class="nav-caret">
                             <i class="fa fa-caret-down"></i>
@@ -78,33 +76,37 @@
                                 </span>
                                 <span class="nav-text">Мои проекты</span>
                             </a>
-                            @endif
                             <ul class="nav-sub nav-mega">
-                                @foreach(Auth::user()->shops as $shop)
-                                    <li>
-                                        <a href="{{ route('product.index', $shop->slug) }}" >
-                                            <span class="nav-text">{{$shop->name}}</span>
-                                        </a>
-                                    </li>
-                                @endforeach
-
-                                @foreach(Auth::user()->markets as $market)
-                                    <li>
-                                        <a href="{{ route('food.index', $market->slug) }}"  >
-                                            <span class="nav-text">{{$market->name}}</span>
-                                        </a>
-                                    </li>
-                                @endforeach
-
-                                @foreach(Auth::user()->restaurants as $restaurant)
-                                    <li>
-                                        <a href="{{ route('dish.index', $restaurant->slug) }}"  >
-                                            <span class="nav-text">{{$restaurant->name}}</span>
-                                        </a>
-                                    </li>
-                                @endforeach
+                                @if(app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('product_access') && app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('shop_access'))
+                                    @foreach(Auth::user()->shops as $shop)
+                                        <li>
+                                            <a href="{{ route('product.index', $shop->slug) }}" >
+                                                <span class="nav-text">{{$shop->name}}</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
+                                @if(app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('food_access') && app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('market_access'))
+                                        @foreach(Auth::user()->markets as $market)
+                                        <li>
+                                            <a href="{{ route('food.index', $market->slug) }}"  >
+                                                <span class="nav-text">{{$market->name}}</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
+                                @if(app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('dish_access') && app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('restaurant_access'))
+                                    @foreach(Auth::user()->restaurants as $restaurant)
+                                        <li>
+                                            <a href="{{ route('dish.index', $restaurant->slug) }}"  >
+                                                <span class="nav-text">{{$restaurant->name}}</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                @endif
                             </ul>
                         </li>
+                        @endif
                         <li>
                             <a>
                             <span class="nav-caret">
@@ -116,86 +118,109 @@
                                 <span class="nav-text">Управление</span>
                             </a>
                             @auth
-
-                                @if(Auth::user()->isAdmin())
-                                    <ul class="nav-sub">
+                                <ul class="nav-sub">
+                                    @can('category_access')
                                         <li>
                                             <a href="{{ route('categories.index') }}" >
                                                 <span class="nav-text">Категории</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('product_access')
                                         <li>
                                             <a href="{{ route('products.index') }}" >
                                                 <span class="nav-text">Товары</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('photo_access')
                                         <li>
                                             <a href="{{ route('photos.index') }}" >
                                                 <span class="nav-text">Фото товаров</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('comment_access')
                                         <li>
                                             <a href="{{ route('comments.index') }}" >
                                                 <span class="nav-text">Комментарий</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('order_access')
                                         <li>
                                             <a href="{{ route('home') }}" >
                                                 <span class="nav-text">Заказы</span>
                                             </a>
                                         </li>
-                                    </ul>
-
-                                @endif
-                                @if(Auth::user()->MainAdmin())
-                                    <ul class="nav-sub">
+                                    @endcan
+                                </ul>
+                                <ul class="nav-sub">
+                                    @can('cooperation_show')
                                         <li>
                                             <a href="{{route('index.cooperation')}}" >
                                                 <span class="nav-text">Сотрудничество</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('user_access')
                                         <li>
                                             <a href="{{ route('user.index') }}" >
                                                 <span class="nav-text">Пользователи</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('shop_access')
                                         <li>
                                             <a href="{{ route('shops.index') }}" >
                                                 <span class="nav-text">Заведений</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('product_access')
                                         <li>
                                             <a href="{{ route('mainproducts.index') }}" >
                                                 <span class="nav-text">Товары</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('category_access')
                                         <li>
                                             <a href="{{ route('maincategory.index') }}" >
                                                 <span class="nav-text">Категории</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('comment_access')
                                         <li>
                                             <a href="{{ route('devcomments.index') }}" >
                                                 <span class="nav-text">Комментарий</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @can('color_access')
                                         <li>
                                             <a href="{{ route('color.index') }}" >
                                                 <span class="nav-text">Цветы</span>
                                             </a>
                                         </li>
+                                    @endcan
+                                    @if(\Illuminate\Support\Facades\Auth::user()->mainAdmin())
                                         <li>
                                             <a href="{{ route('reset') }}" >
                                                 <span class="nav-text">Сбросить</span>
                                             </a>
                                         </li>
+                                    @endif
+                                    @can('theme_access')
                                         <li>
                                             <a href="{{ route('themes.index') }}" >
                                                 <span class="nav-text">Категорий заведений</span>
                                             </a>
                                         </li>
-                                    </ul>
-                                @endif
+                                    @endcan
+                                </ul>
+
                                 <ul class="nav-sub">
                                     <li>
                                         <a href="{{ route('chosen', Auth::user()->id) }}" >
@@ -214,20 +239,12 @@
             </div>
         </div>
     </div>
-    <!-- / -->
-
-    <!-- content -->
-
     <div id="content" class="app-content box-shadow-z2 bg pjax-container" role="main">
-
         <div class="app-header white bg b-b">
-
             <div class="navbar" data-pjax>
                 <a data-toggle="modal" data-target="#aside" class="navbar-item pull-left hidden-lg-up p-r m-a-0">
                     <i class="ion-navicon"></i>
                 </a>
-
-                <!-- nabar right -->
                 <ul class="nav navbar-nav pull-right">
                     <li class="nav-item dropdown">
                         <a class="nav-link clear" data-toggle="dropdown">
@@ -249,7 +266,6 @@
                         </div>
                     </li>
                 </ul>
-                <!-- / navbar right -->
             </div>
         </div>
         <div class="app-footer white bg p-a b-t">
@@ -257,23 +273,16 @@
             <span class="text-sm text-muted">&copy; Все права защищены</span>
         </div>
         <div class="app-body">
-            <!-- PAGE CONTENT -->
         @yield('content-section')
             <a class="md-btn md-fab m-b-sm white" href="{{route('index-html') }}"><i class="fa fa-home"></i></a>
-
-        <!-- END PAGE CONTENT -->
         </div>
     </div>
-    <!-- / -->
-
-    <!-- ############ SWITHCHER START-->
     <div id="switcher">
         <div class="switcher dark-white" id="sw-theme">
             <a href="#" data-ui-toggle-class="active" data-ui-target="#sw-theme" class="dark-white sw-btn">
                 <i class="fa fa-gear text-muted"></i>
             </a>
             <div class="box-header">
-
                 <strong>Настройки темы</strong>
             </div>
             <div class="box-divider"></div>
@@ -307,10 +316,7 @@
             </div>
         </div>
     </div>
-    <!-- ############ SWITHCHER END-->
-    <!-- ############ LAYOUT END-->
 </div>
-<!-- jQuery -->
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

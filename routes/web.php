@@ -28,7 +28,7 @@ Route::group([
 'namespace' => 'mainAdmin',
 'prefix' => 'mainAdmin',
 ], function() {
-Route::group(['middleware'=>'mainadmin'], function(){
+
     Route::get('/theme/check-slug', 'ThemeController@checkSlug')->name('theme.checkSlug');
     Route::resource('user','UserController');
     Route::resource('mainproducts', 'MainProductController');
@@ -44,18 +44,17 @@ Route::group(['middleware'=>'mainadmin'], function(){
     Route::post('colors/update','ColorController@update')->name('color.update');
     Route::post('colors/{colorId}/delete','ColorController@delete')->name('color.delete');
 
-Route::get('/category/check-slug', 'MainCategoryController@checkSlug')->name('category.checkSlug');
-
-
+    Route::get('/category/check-slug', 'MainCategoryController@checkSlug')->name('category.checkSlug');
 
 //Поисковик
-    Route::get('/search/user', 'SearchController@searchUser')->name('search.user');
-    Route::get('/search/company', 'SearchController@searchCompany')->name('search.company');
-    Route::get('/search/products', 'SearchController@searchProduct')->name('search.products');
-    Route::get('/search/category', 'SearchController@searchCategory')->name('search.categories');
-    Route::get('/search/comments', 'SearchController@searchComment')->name('search.comments');
-    Route::get('/search/colors', 'SearchController@searchColor')->name('search.color');
-});
+        Route::group(['prefix' => 'search'], function (){
+            Route::get('/user', 'SearchController@searchUser')->name('search.user');
+            Route::get('/company', 'SearchController@searchCompany')->name('search.company');
+            Route::get('/products', 'SearchController@searchProduct')->name('search.products');
+            Route::get('/category', 'SearchController@searchCategory')->name('search.categories');
+            Route::get('/comments', 'SearchController@searchComment')->name('search.comments');
+            Route::get('/colors', 'SearchController@searchColor')->name('search.color');
+        });
 });
 
 
@@ -64,8 +63,7 @@ Route::group([
 'namespace' => 'Admin',
 'prefix' => 'admin',
 ], function() {
-Route::group(['middleware'=>'is_admin'], function()
-{
+
 
     Route::get('/restaurant/check-slug/', 'RestaurantController@checkSlug')->name('restaurant.checkSlug');
     Route::get('/product/check-slug/', 'ShopController@checkSlug')->name('product.checkSlug');
@@ -109,8 +107,6 @@ Route::group(['middleware'=>'is_admin'], function()
     Route::resource('products','ProductController');
     Route::resource('photos','PhotoController');
     Route::resource('comments','CommentController');
-
-        });
     });
 });
 
@@ -148,6 +144,7 @@ Route::get('/categories','MainController@CategoriesTemplate')->name('categories'
 Route::post('cooperation/','CooperationController@storeCooperations')->name('store.cooperation');
 
 
+
 //Поисковики
 Route::get('/search','SearchController@search')->name('search');
 Route::get('/search/product','SearchController@searchProduct')->name('product.search');
@@ -156,15 +153,11 @@ Route::get('/search/order', 'SearchController@searchOrder')->name('order.search'
 Route::get('/search/comment', 'SearchController@searchComment')->name('comment.search');
 
 
-
-//Продукты по котегориям
+//Продукты по котегориям и страница товара
 Route::get('/{category?}','MainController@CategoryShow')->name('category');
+Route::get('/{category?}/{product?}','MainController@ProductPage')->name('product-more');
 Route::get('{ParentParentCategory?}/{ParentCategory?}/{childCategory1?}','MainController@ChildCategoryShow')->name('childCategory1');
 
-
-
-//Страница продукта
-Route::get('/{category?}/{product?}','MainController@ProductPage')->name('product-more');
 
 
 Route::get('/order/{id}/delete','BasketController@OrderDelete')->name('order-delete');

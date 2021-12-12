@@ -19,17 +19,16 @@
 @section('content-section')
     <div class="container">
         <div class="col-md-12">
-
             @isset($user)
-
-               <h1>Редактировать Админ</h1>
-
+               <h1>Редактировать</h1>
             @else
-
-                <h1>Добавить Админ</h1>
-
+                <h1>Добавить</h1>
             @endisset
-
+            @if(session()->has('success'))
+                <p class="alert alert-success">{{ session()->get('success') }}</p>
+            @elseif(session()->has('warning'))
+                <p class="alert alert-warning">{{ session()->get('warning') }}</p>
+            @endif
             <form method="POST" enctype="multipart/form-data"
                   @isset($user)
                   action="{{ route('user.update', $user) }}"
@@ -67,35 +66,38 @@
                             @error('password')
                             <div class="alert alert-danger"></div>
                             @enderror
-                            <input type="password" class="form-control" name="password" id="password" value="">
+                            <input type="password" class="form-control" name="password" id="password">
                         </div>
                     </div>
                     <br>
-                        <!-- checkbox -->
-                                @foreach (['is_admin' => 'Администратор',
-                                ] as $field => $title)
-                                    <div class="form-group row">
-                                        <label for="code" class="col-sm-2 col-form-label">{{ $title }}: </label>
-                                        <div class="col-sm-10">
-                                            <input type="checkbox" name="{{$field}}" id="{{$field}}"
-                                                   @if(isset($user) && $user->$field === 1)
-                                                        checked="checked"
-                                                   @endif
-                                            >
-                                        </div>
-                                    </div>
-                                    <br>
+                    <div class="form-group">
+                        <label for="roles">Роль:</label>
+                        <div style="padding-bottom: 4px">
+                            <span class="btn btn-info btn-xs select-all" style="border-radius: 0">Выбрать все</span>
+                            <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">Убрать все</span>
+                        </div>
+                        <select class="form-control select2 {{ $errors->has('roles') ? 'is-invalid' : '' }}" name="roles[]" id="roles" multiple>
+                            @foreach($roles as $role)
+                                <option value="{{ $role->id }}" {{ in_array($role->id, old('roles', [])) ? 'selected' : '' }}
+                                @foreach($user->roles as $user_role)
+                                    @if($user_role->id == $role->id)
+                                        selected
+                                    @endif
                                 @endforeach
-                        <!-- endcheckbox -->
+                                >{{ $role->title }} </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <br>
                         @isset($user)
+                            <label for="roles"><b>Проекты:</b></label><br>
                             @foreach ($companies as $company)
                                 <div class="form-group row">
                                     <label class="col-sm-2 form-control-label">{{$company->name}}</label>
                                     <div class="col-sm-10">
                                         <label class="ui-switch m-t-xs m-r">
-                                            <input type="checkbox" name="action[{{$company->id}}]" id="action"
-                                                   @if($company->action == 1)
+                                            <input type="checkbox" name="active[{{$company->slug}}]" id="active" value=""
+                                                   @if($company->active == 1)
                                                         checked="checked"
                                                    @endif
                                             >
@@ -118,4 +120,8 @@
             </form>
         </div>
     </div>
+    <script src = "// code.jquery.com/jquery-1.11.2.min.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type = "text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js" type = "text / javascript"></script>
+    @include('js.main')
 @endsection

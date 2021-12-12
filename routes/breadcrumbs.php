@@ -1,6 +1,8 @@
 <?php
 
 // Главная страница
+use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
+
 Breadcrumbs::register('index-html', function ($trail) {
     $trail->push('Главная страница', route('index-html'));
 });

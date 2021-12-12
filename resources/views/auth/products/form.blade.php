@@ -118,7 +118,7 @@
                             <label  class="col-sm-2 col-form-label">{{ $title }}: </label>
                             <div class="col-sm-10">
                                 <input type="checkbox" name="{{$field}}" id="{{$field}}"
-                                       @if(isset($product) && $product->$field === 1)
+                                       @if(isset($product) && $product->field === 1)
                                        checked="checked"
                                     @endif
                                 >

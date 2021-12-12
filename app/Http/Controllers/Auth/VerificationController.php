@@ -27,7 +27,8 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected function redirectTo(){
+    protected function redirectTo()
+    {
         return route('profile.show', Auth::user()->id);
     }
 

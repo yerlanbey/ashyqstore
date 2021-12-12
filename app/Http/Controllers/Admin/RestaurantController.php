@@ -8,19 +8,26 @@ use App\Food;
 use App\Http\Controllers\Controller;
 use App\Market;
 use App\Restaurant;
+use App\Services\TimeService;
 use App\Theme;
 use App\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class RestaurantController extends Controller
 {
     public function create(User $userId)
     {
+        abort_if(Gate::denies('restaurant_create'), Response::HTTP_FORBIDDEN, 403);
+        $timesArray = [];
         $themes = Theme::all();
-        return view('auth.restaurants.create', compact('themes', 'userId'));
+        $times = TimeService::generateTimeRange(config('app.time.start_time'), config('app.time.end_time'));
+
+        return view('auth.restaurants.create', compact('themes', 'userId', 'times'));
     }
 
     public function storeRestaurant(Request $request)
@@ -40,11 +47,10 @@ class RestaurantController extends Controller
     // Все продукты в Ресторане
     public function indexDish($marketSlug)
     {
-        if(Auth::user()->isAdmin())
-        {
-            $restaurant = Restaurant::where('slug', $marketSlug)->first();
-            $dishes = $restaurant->dishes;
-        }
+        abort_if(Gate::denies('dish_access'), Response::HTTP_FORBIDDEN, 403);
+        $restaurant = Restaurant::where('slug', $marketSlug)->first();
+        $dishes = $restaurant->dishes;
+
         return view('auth.restaurant_dishes.index', compact('restaurant','dishes'));
     }
 

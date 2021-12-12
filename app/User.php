@@ -9,6 +9,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Order;
 use App\Like;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
+
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
     use Notifiable;
@@ -56,7 +60,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     {
         parent::__construct($attributes);
         self::created(function (User $user) {
-            $registrationRole = 3;
+            $registrationRole = 2;
             if (!$user->roles()->get()->contains($registrationRole)) {
                 $user->roles()->attach($registrationRole);
             }
@@ -98,7 +102,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 
     public function restaurants()
     {
-        return$this->hasMany(Restaurant::class);
+        return $this->hasMany(Restaurant::class);
     }
     public function roles()
     {
@@ -118,4 +122,49 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
       ->count();
     }
 
+    public static function activateOrganization($parameters, $user)
+    {
+        // Соединяем три коллекций в одну
+        $relations = ($user->shops)->merge($user->markets)->merge($user->restaurants);
+
+        //Проверяем есть ли массив 'active' в request
+        if(isset($parameters['active'])){
+            //Получаем ключи ( получаем slugs )
+            $slugs = array_keys($parameters['active']);
+
+            $relations->whereIn('slug', $slugs)->map(function ($query){
+                $query->update([
+                    'active' => 1
+                ]);
+            });
+            $relations->whereNotIn('slug', $slugs)->map(function ($query){
+                $query->update([
+                    'active' => 0
+                ]);
+            });
+        }else{
+            $relations->map(function ($query) {
+                return $query->update([
+                    'active' => 0
+                ]);
+            });
+        }
+        return true;
+    }
+
+
+    public static function rolesChanges($request, $user)
+    {
+        if(isset($request->roles)){
+            foreach($request->roles as $role){
+                if(!($user->roles->contains($role))){
+                    $user->roles()->update(['role_id' => $role]);
+                }else{
+                    unset($request->roles);
+                }
+            }
+        }else{
+            return redirect()->route('user.index', $user->id)->with('warning', 'Укажите роль пользователя');
+        }
+    }
 }
