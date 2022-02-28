@@ -12,9 +12,30 @@ use App\Shop;
 use App\Product;
 use App\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ShopController extends Controller
 {
+    /**
+     * @var $host
+     */
+    public $host;
+
+    /**
+     * @var $token
+     */
+    public $token;
+
+    /**
+     * ShopController constructor.
+     *
+     */
+    public function __construct()
+    {
+        $this->host  = config('product-list-api')['host'];
+        $this->token = config('product-list-api')['access-token'];
+    }
+
     public function getDataInShop(ProductsFilterRequest $request, $slug){
         //Фильтр на продукты
         $shop = Shop::where('slug', $slug)->first();
@@ -60,14 +81,18 @@ class ShopController extends Controller
 
     }
 
-    public function getShops(){
-        $restaurants = Restaurant::where('active',1);
-        $markets = Market::where('active',1);
-        $shops = Shop::where('active', 1)->union($restaurants)->union($markets)->orderBy('created_at','desc')->paginate(15);
-        $themes = Theme::all();
-        return view('index',compact('shops','themes' ));
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getShops()
+    {
+        return redirect()->route('categories');
     }
 
+    /**
+     * @param null $code
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function indexTheme($code=null)
     {
         $themes = Theme::where('code', $code)->firstOrFail();

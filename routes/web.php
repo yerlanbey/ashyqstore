@@ -1,5 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Auth::routes([
     'reset' => true,
     'confirm' => true,
@@ -112,6 +114,8 @@ Route::group([
 
 //Работа с корзиной
 Route::post('/add/{id}','BasketController@basketAdd')->name('basket-add');
+Route::post('/add/element/{elementId}', 'BasketController@addElementToBasket')->name('element.basket.add');
+Route::delete('/drop/element/{elementId}', 'BasketController@dropElementFromBasket')->name('element.basket.drop');
 Route::group(['prefix'=>'basket'], function(){
     Route::post('/add/{product}','BasketController@basketAdd')->name('basket-add');
     Route::group([
@@ -154,10 +158,12 @@ Route::get('/search/comment', 'SearchController@searchComment')->name('comment.s
 
 
 //Продукты по котегориям и страница товара
-Route::get('/{category?}','MainController@CategoryShow')->name('category');
+Route::get('categories/{category?}','MainController@CategoryShow')->name('category');
+Route::get('categories/{category?}/{elements?}', 'MainController@elements')->name('elements')->where('elements', '[0-9]+');
+Route::get('element/{element?}','MainController@elementDetail')->name('element.detail');
+
 Route::get('/{category?}/{product?}','MainController@ProductPage')->name('product-more');
 Route::get('{ParentParentCategory?}/{ParentCategory?}/{childCategory1?}','MainController@ChildCategoryShow')->name('childCategory1');
-
 
 
 Route::get('/order/{id}/delete','BasketController@OrderDelete')->name('order-delete');

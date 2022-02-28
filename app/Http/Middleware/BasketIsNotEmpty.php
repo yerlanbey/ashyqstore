@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 use App\Order;
 use Closure;
+use Illuminate\Support\Facades\DB;
 
 class BasketIsNotEmpty
 {
@@ -18,8 +19,11 @@ class BasketIsNotEmpty
       $orderId= session('orderId');
       if (!is_null($orderId)){
         $order = Order::findOrFail($orderId);
-        if($order->products->count() > 0){
+        $element = DB::table('api_element_order')->where('order_id', $orderId)->value('count');
+
+        if($order->products->count() > 0 || $element > 0){
           return $next($request);
+
         }
       }
       session()->flash('warning','Ваша корзина пуста!');

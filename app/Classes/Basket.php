@@ -92,7 +92,7 @@ class Basket{
 
 
   //Для добавление товара в корзину
-  public function addProduct(Product $product)
+      public function addProduct(Product $product)
   {
     if ($this->order->products->contains($product->id)) {
       $pivotRow = $this->getPivot($product);

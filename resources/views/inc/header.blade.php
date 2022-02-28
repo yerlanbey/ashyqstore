@@ -5,8 +5,8 @@
     <div id="top-header">
         <div class="container">
             <ul class="header-links pull-left">
-                <li><a href="#"><i class="fa fa-phone"></i> +7707-675-95-45</a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> ashyqstore@gmail.com</a></li>
+                <li><a href="#"><i class="fa fa-phone"></i> +7707-971-67-91</a></li>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> razumgroup@gmail.com</a></li>
                 <li><a href="#"><i class="fa fa-map-marker"></i> Shymkent, Kazakhstan</a></li>
             </ul>
             <ul class="header-links pull-right">
@@ -42,7 +42,7 @@
                         <a href="#" class="logo">
                             <h2 class="logo" style="margin-top: 15px;">
                                 <a href="{{route('index-html')}}" style="color: white;">
-                                    ASHYQSTORE
+                                    RAZUM GROUP
                                 </a>
                             </h2>
                         </a>

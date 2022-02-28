@@ -747,9 +747,6 @@ textarea.input {
   width: 60%;
   background: #D10024;
   opacity: 0.9;
-  -webkit-transform: skewX(-45deg);
-  -ms-transform: skewX(-45deg);
-  transform: skewX(-45deg);
 }
 
 .shop:after {
@@ -761,15 +758,12 @@ textarea.input {
   width: 100%;
   background: #D10024;
   opacity: 0.9;
-  -webkit-transform: skewX(-45deg) translateX(-100%);
-  -ms-transform: skewX(-45deg) translateX(-100%);
-  transform: skewX(-45deg) translateX(-100%);
+
 }
 
 .shop .shop-img {
   position: relative;
   background-color: #E4E7ED;
-  z-index: -1;
 }
 
 .shop .shop-img>img {

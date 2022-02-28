@@ -30,28 +30,26 @@
         <div class="container">
             <!-- row -->
             <div class="row">
-                @isset($category->childCategories)
-            @foreach($category->childCategories as $cat)
-                <!-- shop -->
-                    <div class="col-md-4 col-xs-6">
-                        <div class="shop">
-                            <div class="shop-img">
-                                @if(!is_null($cat->image))
-                                    <img src="{{ Storage::url($cat->image) }}" alt="" height="300px">
-                                @else
+
+                @forelse($subCategories as $subcategory)
+                    <!-- shop -->
+                        <div class="col-md-4 col-xs-6">
+                            <div class="shop">
+                                <div class="shop-img">
                                     <img src="{{asset('/img/category_icon.png')}}" alt="" height="300px">
-                                @endif
-                            </div>
-                            <div class="shop-body">
-                                <h3>{{ $cat->name }}</h3>
-{{--                                <p>{{$cat->parentCategory->code}}</p>--}}
-                                <a href="{{ route('childCategory1', [$cat->parentCategory->code,$cat->code, $cat->childCategories[0]->code]) }}" class="cta-btn">Посмотреть <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                                <div class="shop-body">
+                                    <h3>{{ $subcategory['name'] }}</h3>
+    {{--                                <p>{{$cat->parentCategory->code}}</p>--}}
+{{--                                    <a href="{{ route('childCategory1', [$cat->parentCategory->code,$cat->code, $cat->childCategories[0]->code]) }}" class="cta-btn">Посмотреть <i class="fa fa-arrow-circle-right"></i></a>--}}
+                                    <a href="{{ route('elements', [$id, $subcategory['id']]) }}" class="cta-btn">Посмотреть <i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- /shop -->
-                @endforeach
-                    @endisset
+                        <!-- /shop -->
+                @empty
+                        <p> Пусто </p>
+                @endforelse
             </div>
             <!-- /row -->
 
