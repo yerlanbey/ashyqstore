@@ -2,5 +2,5 @@
 
 return [
     'host' => 'https://api.al-style.kz/api',
-    'access-token' => 'etfUsSEucEW2gBb396T22vpJaMATwNte'
+    'access-token' => 'xtG_pDC8t0GoRbD58Cm5jyzHfNTrL5qx'
 ];
