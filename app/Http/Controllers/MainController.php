@@ -5,6 +5,8 @@ use App\API\SubCategories;
 use App\Dish;
 use App\Food;
 use App\Http\Requests\ProductsFilterRequest;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\SubscriptionRequest;
@@ -17,6 +19,7 @@ use App\Comment;
 use App\Shop;
 use App\Subscribtion;
 use Illuminate\Support\Facades\Http;
+use Illuminate\View\View;
 
 class MainController extends Controller
 {
@@ -45,12 +48,20 @@ class MainController extends Controller
         try {
             $endpoint = Http::get("$this->host/categories?$this->token");
             $categories = collect($endpoint->json())->whereIn('id', CategoriesList::IdArray());
-
             return view('categories',compact('categories'));
         }catch (\DomainException $exception) {
             throw new \DomainException($exception->getMessage());
         }
+    }
 
+    /**
+     * @return Application|Factory|View
+     */
+    public function productCategories()
+    {
+        $categories = Category::orderBy('created_at','desc')->whereNull('category_id')->
+        with('childCategories')->get();
+        return view('productCategories',compact('categories'));
     }
 
     // Страница продукта
@@ -103,7 +114,7 @@ class MainController extends Controller
     /**
      * @param SubCategories $subCategories
      * @param null $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function CategoryShow(SubCategories $subCategories, $id = null)
     {
@@ -119,9 +130,19 @@ class MainController extends Controller
     }
 
     /**
+     * @param $code
+     * @return Application|Factory|View
+     */
+    public function productCategoryDetail($code)
+    {
+        $category = Category::where('code',$code)->firstOrFail();
+        return view('productCategory',compact('category'));
+    }
+
+    /**
      * @param null $category
      * @param null $subCategory
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function elements($category = null, $subCategory = null)
     {
@@ -151,7 +172,7 @@ class MainController extends Controller
 
     /**
      * @param null $elementId
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function elementDetail($elementId = null)
     {

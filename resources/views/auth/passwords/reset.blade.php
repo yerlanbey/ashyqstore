@@ -43,7 +43,7 @@
                 <a href="index.html" class="navbar-brand">
                     <div data-ui-include="'images/logo.svg'"></div>
                     <img src="images/logo.png" alt="." class="hide">
-                    <span class="hidden-folded inline">ASHYQSTORE | Заказывай где хочешь</span>
+                    <span class="hidden-folded inline">RAZUMGROUP</span>
                 </a>
                 <!-- / brand -->
             </div>

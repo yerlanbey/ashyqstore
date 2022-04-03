@@ -37,7 +37,7 @@
                 <!-- brand -->
                 <a href="{{route('index-html')}}" class="navbar-brand">
                     <div data-ui-include="'images/logo.svg'"></div>
-                    <span class="hidden-folded inline">ASHYQSTORE | Закажи где хочешь</span>
+                    <span class="hidden-folded inline">RAZUMGROUP | Закажи где хочешь</span>
                 </a>
                 <!-- / brand -->
             </div>

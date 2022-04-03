@@ -11,7 +11,9 @@ use App\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class MarketController extends Controller
 {
@@ -41,11 +43,10 @@ class MarketController extends Controller
     // Все продукты в Маркете
     public function indexFood($marketSlug)
     {
-        if(Auth::user()->isAdmin())
-        {
-            $market = Market::where('slug', $marketSlug)->first();
-            $foods = $market->foods;
-        }
+        abort_if(Gate::denies('market_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $market = Market::where('slug', $marketSlug)->first();
+        $foods = $market->foods;
+
         return view('auth.market_foods.index', compact('market','foods'));
     }
 
@@ -61,10 +62,9 @@ class MarketController extends Controller
     {
         $parametrs = $request->all();
 
-        if(Auth::user()->isAdmin()){
-            $parametrs['user_id'] = Auth::user()->id;
-        }
-        dd($parametrs);
+        abort_if(Gate::denies('market_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $parametrs['user_id'] = Auth::user()->id;
         unset($parametrs['image']);
         if($request->has('image')){
             $parametrs['image'] = $request->file('image')->store('foods');

@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 Auth::routes([
     'reset' => true,
     'confirm' => true,
-    'verify' => true,
 ]);
 
 //Клиентский функционал
@@ -145,6 +144,7 @@ Route::get('/','ShopController@getShops')->name('index-html');
 Route::get('/company/{shopSlug}','ShopController@getDataInShop')->name('shop.index');
 Route::get('/theme/{themeId}', 'ShopController@indexTheme')->name('index.theme');
 Route::get('/categories','MainController@CategoriesTemplate')->name('categories');
+Route::get('products/categories','MainController@productCategories')->name('product.categories');
 Route::post('cooperation/','CooperationController@storeCooperations')->name('store.cooperation');
 
 
@@ -158,7 +158,9 @@ Route::get('/search/comment', 'SearchController@searchComment')->name('comment.s
 
 
 //Продукты по котегориям и страница товара
-Route::get('categories/{category?}','MainController@CategoryShow')->name('category');
+Route::get('/categories/{category?}','MainController@CategoryShow')->name('category');
+Route::get('products/categories/{category?}','MainController@productCategoryDetail')->name('product.category');
+
 Route::get('categories/{category?}/{elements?}', 'MainController@elements')->name('elements')->where('elements', '[0-9]+');
 Route::get('element/{element?}','MainController@elementDetail')->name('element.detail');
 

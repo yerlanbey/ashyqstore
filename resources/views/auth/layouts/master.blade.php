@@ -36,7 +36,7 @@
                 <a href="{{ route('index-html') }}" class="navbar-brand">
                     <div data-ui-include="'images/logo.svg'"></div>
                     <img src="images/logo.png" alt="." class="hide">
-                    <span class="hidden-folded inline">ASHYQSTORE</span>
+                    <span class="hidden-folded inline">RAZUMGROUP</span>
                 </a>
             </div>
             <div data-flex class="hide-scroll">

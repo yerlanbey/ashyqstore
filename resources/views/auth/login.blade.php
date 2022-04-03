@@ -37,7 +37,7 @@
                 <!-- brand -->
                 <a href="{{route('index-html')}}" class="navbar-brand">
 
-                    <span class="hidden-folded inline">ASHYQSTORE | Закажи где хочешь</span>
+                    <span class="hidden-folded inline">RAZUMGROUP</span>
                 </a>
                 <!-- / brand -->
             </div>
@@ -92,7 +92,7 @@
                 </div>
                 @endif
                 <div>
-                    Впервые в Ashyqstore?
+                    Впервые в RAZUMGROUP?
                     <a href="{{route('register')}}" class="text-primary _600">Зарегистрироваться</a>
                 </div>
             </div>

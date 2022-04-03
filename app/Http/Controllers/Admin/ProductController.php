@@ -19,11 +19,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // $products = Product::get();
-        if(Auth::user()->isAdmin()){
-            $adminId = Auth::user()->id;
-            $products = Auth::user()->products()->paginate(30);
-        }
+        $products = Product::get();
+
+        $products = Auth::user()->products()->paginate(30);
+
         return view('auth.products.index',compact('products'));
     }
 
