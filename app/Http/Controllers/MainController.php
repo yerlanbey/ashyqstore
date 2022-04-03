@@ -48,6 +48,12 @@ class MainController extends Controller
         try {
             $endpoint = Http::get("$this->host/categories?$this->token");
             $categories = collect($endpoint->json())->whereIn('id', CategoriesList::IdArray());
+
+            //Если данные с api пустая то возвращаем данные с БД
+            if (empty($categories->toArray())) {
+                return $this->productCategories();
+            }
+
             return view('categories',compact('categories'));
         }catch (\DomainException $exception) {
             throw new \DomainException($exception->getMessage());
@@ -67,7 +73,6 @@ class MainController extends Controller
     // Страница продукта
     public function ProductPage($category, $productSlug=null)
     {
-
         $category = Category::where('code', $category)->first();
 
         $product = Product::withTrashed()->where('slug',$productSlug)->first();
@@ -107,8 +112,6 @@ class MainController extends Controller
             return view('product',['products' => $products,'product' => $product,
                 'comments'=>$comments,'photos'=>$photos, 'category' => $category]);
         }
-
-
     }
 
     /**

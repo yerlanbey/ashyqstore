@@ -10,6 +10,7 @@
                 <li><a href="#"><i class="fa fa-map-marker"></i> Shymkent, Kazakhstan</a></li>
             </ul>
             <ul class="header-links pull-right">
+                <li><a href="{{ route('product.categories') }}"><i class="fa fa-list-alt"></i> Категорий</a></li>
                 @guest
                 <li><a href="{{ route('login') }}"><i class="fa fa-user-o"></i> Вход</a></li>
                 @endguest
