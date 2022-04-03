@@ -43,9 +43,9 @@
                 <nav class="scroll nav-stacked nav-stacked-rounded nav-color">
                     <ul class="nav" data-ui-nav>
                         @if(app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('shop_create') || app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('market_create') || app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('restaurant_create'))
-                            <li class="nav-header hidden-folded">
-                                <span class="text-xs">Создать </span>
-                            </li>
+{{--                            <li class="nav-header hidden-folded">--}}
+{{--                                <span class="text-xs">Создать </span>--}}
+{{--                            </li>--}}
                         @endif
                         @can('shop_create')
                             <a href="{{route('shop.create', Auth::user())}}" class="b-danger"  style="text-align: center">
@@ -54,7 +54,7 @@
                         @endcan
                         @can('market_create')
                             <a href="{{ route('market.create', Auth::user()) }}" class="b-danger"  style="text-align: center">
-                                <span class="nav-text">Продуктовый магазин</span>
+                                <span class="nav-text"></span>
                             </a>
                         @endcan
                         @can('restaurant_create')
