@@ -30,7 +30,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($orders as $product)
+                        @foreach($products as $product)
                             <tr>
                                 <td>
                                     @isset($product['id'])
@@ -48,7 +48,7 @@
                                 </td>
                                 <td><span class="badge">
                                         @isset($product['id'])
-                                            {{\Illuminate\Support\Facades\DB::table('order_product')->where(['product_id' => $product['id'], 'order_id' => session('orderId')])->value('count')}}
+                                            {{\Illuminate\Support\Facades\DB::table('food_order')->where(['food_id' => $product['id'], 'order_id' => session('orderId')])->value('count')}}
                                         @else
                                             {{\Illuminate\Support\Facades\DB::table('api_element_order')->where(['element_id' => $product['article'], 'order_id' => session('orderId')])->value('count')}}
                                         @endisset</span>
@@ -68,7 +68,7 @@
 {{--                                <td>{{$product->getPriceForCount()}} ₸</td>--}}
                                 <td>
                                     @isset($product['id'])
-                                        {{\Illuminate\Support\Facades\DB::table('order_product')->where(['product_id' => $product['id'], 'order_id' => session('orderId')])->value('count') * $product['price']}} ₸
+                                        {{\Illuminate\Support\Facades\DB::table('food_order')->where(['food_id' => $product['id'], 'order_id' => session('orderId')])->value('count') * $product['price']}} ₸
                                     @else
                                         {{\Illuminate\Support\Facades\DB::table('api_element_order')->where(['element_id' => $product['article'], 'order_id' => session('orderId')])->value('count') * $product['price2']}} ₸
                                     @endisset
@@ -81,10 +81,10 @@
                             @php
                                 $totalPrice = 0;
                             @endphp
-                            @foreach($orders as $product)
+                            @foreach($products as $product)
                                 @php
                                     if (isset($product['id'])) {
-                                        $totalPrice += (int) \Illuminate\Support\Facades\DB::table('order_product')->where(['product_id' => $product['id'], 'order_id' => session('orderId')])->value('count') * $product['price'];
+                                        $totalPrice += (int) \Illuminate\Support\Facades\DB::table('food_order')->where(['order_id' => $product['id'], 'order_id' => session('orderId')])->value('count') * $product['price'];
                                     } else {
                                         $totalPrice += (int) \Illuminate\Support\Facades\DB::table('api_element_order')->where(['element_id' => $product['article'], 'order_id' => session('orderId')])->value('count') * $product['price2'];
                                     }

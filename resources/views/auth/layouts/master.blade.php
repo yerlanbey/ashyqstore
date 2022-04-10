@@ -147,13 +147,13 @@
                                             </a>
                                         </li>
                                     @endcan
-                                    @can('order_access')
+
                                         <li>
                                             <a href="{{ route('home') }}" >
                                                 <span class="nav-text">Заказы</span>
                                             </a>
                                         </li>
-                                    @endcan
+
                                 </ul>
                                 <ul class="nav-sub">
                                     @can('cooperation_show')

@@ -21,7 +21,7 @@ class BasketIsNotEmpty
         $order = Order::findOrFail($orderId);
         $element = DB::table('api_element_order')->where('order_id', $orderId)->value('count');
 
-        if($order->products->count() > 0 || $element > 0){
+        if($order->foods->count() > 0 || $element > 0){
           return $next($request);
 
         }

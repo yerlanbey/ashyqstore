@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\Basket;
+use App\Food;
 use App\Order;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
@@ -38,12 +39,13 @@ class BasketController extends Controller {
     public function BasketChecking()
     {
         $order = (new Basket())->getOrder();
-        $products = $order->products()->get()->toArray();
-        $elements = DB::table('api_element_order')->where('order_id', $order->id)->pluck('element_id')->toArray();
-        $elementsId = implode(',', $elements);
-        $endpoint = Http::get("$this->host/element-info?$this->token&article=$elementsId&additional_fields=images")->json();
-        $orders = array_merge($products, $endpoint);
-        return view('basket',compact('orders'));
+        $products = $order->foods()->get()->toArray();
+//        $elements = DB::table('api_element_order')->where('order_id', $order->id)->pluck('element_id')->toArray();
+//        $elementsId = implode(',', $elements);
+//        $endpoint = Http::get("$this->host/element-info?$this->token&article=$elementsId&additional_fields=images")->json();
+//
+
+        return view('basket',compact('products'));
     }
     public function OrderConfirm(Request $request)
     {
@@ -79,7 +81,8 @@ class BasketController extends Controller {
     }
 
 
-    public function basketAdd(Product $product){
+    public function basketAdd($product){
+        $product = Food::findOrFail($product);
         $success =  (new Basket(true))->addProduct($product);
         if ($success){
             session()->flash('success','Добавлен товар ' . $product->name);
@@ -90,7 +93,8 @@ class BasketController extends Controller {
         return redirect()->route('basket-check');
     }
 
-    public function basketRemove(Product $product){
+    public function basketRemove($product){
+        $product = Food::query()->findOrFail($product);
         $order = (new Basket())->getOrder();
         (new Basket())->removeProduct($product);
         session()->flash('warning','Удален товар ' . $product->name);

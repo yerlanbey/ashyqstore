@@ -18,7 +18,6 @@
             </div>
             <!-- row -->
             <div class="row">
-
                 <div class="col-md-7">
                     <form action="{{ route('order-confirm') }}" method="POST" enctype="multipart/form-data">
                         <!-- Подтвердите заказ -->

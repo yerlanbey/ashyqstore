@@ -112,18 +112,18 @@ Route::group([
 });
 
 //Работа с корзиной
-Route::post('/add/{id}','BasketController@basketAdd')->name('basket-add');
 Route::post('/add/element/{elementId}', 'BasketController@addElementToBasket')->name('element.basket.add');
 Route::delete('/drop/element/{elementId}', 'BasketController@dropElementFromBasket')->name('element.basket.drop');
+
+Route::post('/add/{id}','BasketController@basketAdd')->name('basket-add');
 Route::group(['prefix'=>'basket'], function(){
-    Route::post('/add/{product}','BasketController@basketAdd')->name('basket-add');
     Route::group([
         'middleware'=>'not_empty_basket'
     ], function(){
         Route::get('/','BasketController@BasketChecking')->name('basket-check');
         Route::get('/place','BasketController@OrderArrange')->name('order-arrange');
         Route::post('/place','BasketController@OrderConfirm')->name('order-confirm');
-        Route::post('/remove/{product}','BasketController@basketRemove')->name('basket-remove');
+        Route::post('/remove/{id}','BasketController@basketRemove')->name('basket-remove');
     });
 });
 

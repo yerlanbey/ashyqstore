@@ -34,18 +34,9 @@ class OrderController extends Controller
 
     }
 
-    public function AdminHome(Order $order)
+    public function AdminHome()
     {
-      $orders = Order::where('status',1)->get();
-      $uniques = [];
-      foreach($orders as $order){
-        foreach(DB::table('order_product')->where('order_id',$order->id)->get() as $otg){
-          if($otg->admin_id == Auth::user()->id){
-            $uniques[] = $order->id;
-          }
-        }
-      }
-      $orders = Order::orderBy('created_at', 'desc')->whereIn('id', $uniques)->paginate(20);
+      $orders = Order::where('status',1)->paginate(20);
 
       return view('auth.orders.index', compact('orders'));
     }
