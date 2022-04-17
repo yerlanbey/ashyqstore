@@ -44,7 +44,7 @@ class Basket{
 
     public function countAvailable($updateCount=false)
     {
-        foreach($this->order->products as $orderWithProduct) {
+        foreach($this->order->foods as $orderWithProduct) {
             if($orderWithProduct->count < $this->getPivot($orderWithProduct)->count){
                 return false;
             }
@@ -54,7 +54,7 @@ class Basket{
             }
         }
         if($updateCount){
-            $this->order->products->map->save();
+            $this->order->foods->map->save();
         }
         return true;
     }
