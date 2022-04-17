@@ -51,7 +51,7 @@
                                 Действия
                             </th>
                         </tr>
-                        @admin
+
                         @foreach($orders as $order)
 
                             <tr>
@@ -62,7 +62,7 @@
                                 <td>{{$order->getFullPrice() }} ₸</td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        @admin
+
                                         <a class="btn btn-success" type="button"
                                            href="{{ route('orders.show', $order) }}">
                                             Открыть
@@ -71,27 +71,13 @@
                                            href="{{ route('order-delete', $order) }}">
                                             Удалить
                                         </a>
-                                        @endadmin
+
                                     </div>
                                 </td>
 
                             </tr>
                         @endforeach
-                        @else
-                            @foreach($orders as $order)
-                                <tr>
-                                    <td>{{$order->id}}</td>
-                                    <td>{{$order->name}}</td>
-                                    <td>{{$order->phone}}</td>
-                                    <td>{{$order->created_at->format('H:i d/m/Y')}}</td>
-                                    <td>{{$order->getFullPrice() }}</td>
-                                    <td>
-                                        <a class="btn btn-success" type="button"
-                                           href="{{ route('client.orders.show', $order) }}">
-                                            Открыть</a>
-                                    </td>
-                                    @endforeach
-                                    @endadmin
+
                         </tbody>
                     </table>
 

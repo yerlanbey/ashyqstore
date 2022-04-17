@@ -45,8 +45,22 @@ class PermissionRoleTableSeeder extends Seeder
             }
         });
 
+        $retailer_order = $admin_permissions->filter(function ($permission){
+            if((substr($permission->title, 0, 6) == 'order_') == true){
+                return substr($permission->title, 0, 6) == 'order_';
+            }
+        });
+
+        $retailer_category = $admin_permissions->filter(function ($permission){
+            if((substr($permission->title, 0, 9) == 'category_') == true){
+                return substr($permission->title, 0, 9) == 'category_';
+            }
+        });
+
         Role::findOrFail(4)->permissions()->attach($retailer_market);
         Role::findOrFail(4)->permissions()->attach($retailer_food);
+        Role::findOrFail(4)->permissions()->attach($retailer_order);
+        Role::findOrFail(4)->permissions()->attach($retailer_category);
 
         //Для Ресторатор
         $restaurateur_restaurant = $admin_permissions->filter(function ($permission) {

@@ -54,7 +54,7 @@
                         @endcan
                         @can('market_create')
                             <a href="{{ route('market.create', Auth::user()) }}" class="b-danger"  style="text-align: center">
-                                <span class="nav-text"></span>
+                                <span class="nav-text">Создать магазин</span>
                             </a>
                         @endcan
                         @can('restaurant_create')
@@ -119,13 +119,6 @@
                             </a>
                             @auth
                                 <ul class="nav-sub">
-                                    @can('category_access')
-                                        <li>
-                                            <a href="{{ route('categories.index') }}" >
-                                                <span class="nav-text">Категории</span>
-                                            </a>
-                                        </li>
-                                    @endcan
                                     @can('product_access')
                                         <li>
                                             <a href="{{ route('products.index') }}" >
@@ -147,13 +140,13 @@
                                             </a>
                                         </li>
                                     @endcan
-
+                                    @can('order_access')
                                         <li>
                                             <a href="{{ route('home') }}" >
                                                 <span class="nav-text">Заказы</span>
                                             </a>
                                         </li>
-
+                                    @endcan
                                 </ul>
                                 <ul class="nav-sub">
                                     @can('cooperation_show')
@@ -187,7 +180,7 @@
                                     @can('category_access')
                                         <li>
                                             <a href="{{ route('maincategory.index') }}" >
-                                                <span class="nav-text">Категории</span>
+                                                <span class="nav-text">Категории(Admin)</span>
                                             </a>
                                         </li>
                                     @endcan

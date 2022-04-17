@@ -1,16 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Order;
-use App\User;
-use App\Product;
-use App\Order_Product;
-use App\Mail\SendEmail;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use mysql_xdevapi\Collection;
 
 class OrderController extends Controller
 {
@@ -24,16 +19,6 @@ class OrderController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-
-    }
-
     public function AdminHome()
     {
       $orders = Order::where('status',1)->paginate(20);
@@ -43,7 +28,9 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-      $products = $order->products()->get();
+        dd(ca);
+      $products = $order->foods()->get();
+
       return view('auth.orders.show',compact('order','products'));
     }
 }

@@ -45,15 +45,15 @@
                 </tr>
                 @foreach($foods as $food)
                     <tr>
-                        <td>{{$food->id}}</td>
-                        <td>{{$food->code}}</td>
-                        <td>{{$food->name}}</td>
-                        <td>{{$food->category->name}}</td>
+                        <td>{{$food->id ?? null}}</td>
+                        <td>{{$food->code ?? null}}</td>
+                        <td>{{$food->name ?? null}}</td>
+                        <td>{{$food->category->name ?? null}}</td>
                         <td style="text-align:center">{{$food->count}}</td>
                         <td>
                             <div class="btn-group" role="group">
-                                <form action="{{ route('food.destroy', $food) }}" method="POST">
-                                    <a class="btn btn-warning" type="button" href="{{route('food.edit', $food)}}">
+                                <form action="{{ route('food.destroy', $food ?? null) }}" method="POST">
+                                    <a class="btn btn-warning" type="button" href="{{route('food.edit', $food ?? null)}}">
                                         О товаре
                                     </a>
                                     @csrf
@@ -68,7 +68,7 @@
             </table>
             @isset($market)
                 <a class="btn btn-success" type="button"
-                   href="{{ route('food.create', $market) }}">
+                   href="{{ route('food.create', $market ?? null) }}">
                     Добавить товар
                 </a>
             @endisset
