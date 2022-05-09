@@ -992,7 +992,7 @@ span.hit{
 }
 
 .product .product-body .product-rating>i.fa-star {
-  color: #ef233c;
+  color: #1ba399;
 }
 
 .product .product-body .product-rating:after {
@@ -1081,7 +1081,7 @@ span.hit{
   border: 2px solid transparent;
   height: 40px;
   padding: 0 30px;
-  background-color: #ef233c;
+  background-color: #1ba399;
   color: #FFF;
   text-transform: uppercase;
   font-weight: 700;
@@ -1575,7 +1575,7 @@ span.hit{
   border: 2px solid transparent;
   height: 40px;
   padding: 0 30px;
-  background-color: #ef233c;
+  background-color: #1ba399;
   color: #FFF;
   text-transform: uppercase;
   font-weight: 700;
