@@ -37,24 +37,42 @@
                         Действия
                     </th>
                 </tr>
-                            @foreach($categories as $category)
-                <tr>
-                    <td>{{ $category->id }}</td>
-                    <td>{{ $category->code }}</td>
-                    <td>{{ $category->name }}</td>
-                    <td>
-                        <div class="btn-group" role="group">
-                            <form action="{{route('maincategory.destroy', $category->id)}}" method="POST">
-                                <a class="btn btn-success" type="button" href="{{ route('maincategory.show', $category) }}">Открыть</a>
-                                <a class="btn btn-warning" type="button" href="{{ route('maincategory.edit', $category) }}">Редактировать</a>
-                                @csrf
-                                @method('DELETE')
-                                <input class="btn btn-danger" type="submit" value="Удалить">
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                            @endforeach
+                    @foreach($categories as $category)
+                        <tr>
+                            <td>{{ $category->id }}</td>
+                            <td>{{ $category->code }}</td>
+                            <td>{{ $category->name }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <form action="{{route('maincategory.destroy', $category->id)}}" method="POST">
+                                        <a class="btn btn-success" type="button" href="{{ route('maincategory.show', $category) }}">Открыть</a>
+                                        <a class="btn btn-warning" type="button" href="{{ route('maincategory.edit', $category) }}">Редактировать</a>
+                                        @csrf
+                                        @method('DELETE')
+                                        <input class="btn btn-danger" type="submit" value="Удалить">
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @foreach($category->childCategories as $childCategory)
+                            <tr>
+                                <td style="text-decoration: underline; text-decoration-color: blue">{{ $childCategory->id }}</td>
+                                <td style="text-decoration: underline; text-decoration-color: blue">{{ $childCategory->code }}</td>
+                                <td style="text-decoration: underline; text-decoration-color: blue">{{ $childCategory->name }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <form action="{{route('maincategory.destroy', $childCategory->id)}}" method="POST">
+                                            <a class="btn btn-success" type="button" href="{{ route('maincategory.show', $childCategory) }}">Открыть</a>
+                                            <a class="btn btn-warning" type="button" href="{{ route('maincategory.edit', $childCategory) }}">Редактировать</a>
+                                            @csrf
+                                            @method('DELETE')
+                                            <input class="btn btn-danger" type="submit" value="Удалить">
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endforeach
                 </tbody>
 
             </table>
