@@ -1,32 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Food;
 use App\Http\Requests\SearchRequest;
 use App\Category;
 use App\Comment;
 use App\Order;
 use App\Product;
-use App\Shop;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class SearchController extends Controller
 {
+    /**
+     * Поиск через Header
+     * @param SearchRequest $request
+     * @return Application|Factory|View
+     */
     public function search(SearchRequest $request)
-
     {
-        $data = $request->all();
-        if($data['select'] === 'По магазинам'){
-            $shops = Shop::where('name','LIKE','%'.$data['searching'].'%')->get();
-        }elseif ($data['select'] === 'По продуктам'){
-            $products = Product::where('name','LIKE','%'.$data['searching'].'%')->get();
-        }
-        if(isset($products)) {
-            return view('search.search_product', compact('products'));
-        }elseif(isset($shops)){
-            return view('search.search_product', compact('shops'));
-        }
+        $products = Food::where('name','LIKE','%'.$request->searching.'%')->get();
+        return view('search.search_product', compact('products'));
     }
 
     public function searchProduct(SearchRequest $request)

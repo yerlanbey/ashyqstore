@@ -46,6 +46,11 @@
                                     <option value="{{ $category->id }}">
                                         {{$category->name}}
                                     </option>
+                                    @foreach($category->childCategories as $childCategory)
+                                        <option value="{{ $childCategory->id }}">
+                                            -- {{$childCategory->name}}
+                                        </option>
+                                    @endforeach
                                 @endforeach
                             </select>
                         </div>

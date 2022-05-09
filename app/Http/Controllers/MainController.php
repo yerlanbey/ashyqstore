@@ -65,53 +65,55 @@ class MainController extends Controller
      */
     public function productCategories()
     {
-        $categories = Category::orderBy('created_at','desc')->whereNull('category_id')->
-        with('childCategories')->get();
+        $categories = Category::query()->orderByDesc('created_at')
+            ->whereNull('category_id')
+            ->with(['childCategories.childCategories' => function($query) {
+            $query->withCount('foods');
+        }, 'childCategories.foods'])
+            ->get();
+
         return view('productCategories',compact('categories'));
     }
 
-    // Страница продукта
+    public function productChildCategories($childCategory = null)
+    {
+        $categories = Category::query()
+            ->with('childCategories')
+            ->where('code', $childCategory)
+            ->first();
+
+        return view('productChildCategories',compact('categories'));
+    }
+
+    public function list()
+    {
+        $products = Food::query()->paginate(20);
+        return view('productList', compact('products'));
+    }
+    /**
+     * @param $category
+     * @param $productSlug
+     * @return Application|Factory|View
+     */
     public function ProductPage($category, $productSlug=null)
     {
         $category = Category::where('code', $category)->first();
 
-        $product = Product::withTrashed()->where('slug',$productSlug)->first();
         $food = Food::withTrashed()->where('slug',$productSlug)->first();
-        $dish = Dish::withTrashed()->where('slug', $productSlug)->first();
 
+        $data = Food::all();
+        $products = $data->shuffle();
+        $comments = Comment::where('food_code',$food->slug)->get();
+        $photos = Photo::with('foods');
 
-        if(isset($product)){
-            $data = Product::all();
-            $products = $data->shuffle();
+        $product = $food;
+        return view('product',[
+            'products'  => $products,
+            'product'   => $product,
+            'comments'  =>$comments,
+            'photos'    =>$photos,
+            'category'  => $category]);
 
-            $comments = Comment::where('product_code',$product->slug)->get();
-            $photos = Photo::with('products');
-
-            return view('product',['products' => $products,'product' => $product,
-                'comments'=>$comments,'photos'=>$photos, 'category' => $category]);
-        }else if(isset($food)){
-            $data = Food::all();
-            $products = $data->shuffle();
-
-            $comments = Comment::where('food_code',$food->slug)->get();
-
-            $photos = Photo::with('foods');
-
-            $product = $food;
-            return view('product',['products' => $products,'product' => $product,
-                'comments'=>$comments,'photos'=>$photos, 'category' => $category]);        }
-        else if(isset($dish)){
-            $data = Dish::all();
-            $products = $data->shuffle();
-
-            $comments = Comment::where('dish_code',$dish->slug)->get();
-
-            $photos = Photo::with('dishes');
-
-            $product = $dish;
-            return view('product',['products' => $products,'product' => $product,
-                'comments'=>$comments,'photos'=>$photos, 'category' => $category]);
-        }
     }
 
     /**
@@ -136,9 +138,9 @@ class MainController extends Controller
      * @param $code
      * @return Application|Factory|View
      */
-    public function productCategoryDetail($code)
+    public function productCategoryDetail($parentCategory = null, $childCategory = null)
     {
-        $category = Category::where('code',$code)->firstOrFail();
+        $category = Category::where('code',$childCategory)->firstOrFail();
         return view('productCategory',compact('category'));
     }
 

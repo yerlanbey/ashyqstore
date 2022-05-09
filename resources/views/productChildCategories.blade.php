@@ -30,7 +30,7 @@
         <div class="container">
             <!-- row -->
             <div class="row">
-            @foreach($categories as $category)
+            @foreach($categories->childCategories as $category)
                 <!-- shop -->
                     <div class="col-md-4 col-xs-6">
                         <div class="shop">
@@ -43,7 +43,7 @@
                             </div>
                             <div class="shop-body">
                                 <h3>{{ $category->name }}</h3>
-                                <a href="{{ route('product.childCategories', [$category->code]) }}" class="cta-btn">Посмотреть <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="{{ route('product.category', [$category->parentCategory->code, $category->code]) }}" class="cta-btn">Посмотреть <i class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>

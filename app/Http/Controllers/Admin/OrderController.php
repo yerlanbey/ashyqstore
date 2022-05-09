@@ -28,7 +28,6 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        dd(ca);
       $products = $order->foods()->get();
 
       return view('auth.orders.show',compact('order','products'));

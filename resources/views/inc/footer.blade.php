@@ -48,13 +48,10 @@
             <div class="row">
                 <div class="col-md-3 col-xs-6">
                     <div class="footer">
-                        <h3 class="footer-title">О нас</h3>
-                        <p>Сейчас сайт доступен только для жителей города Шымкент</p>
-                        <br>
                         <ul class="footer-links">
                             <li><a href="#"><i class="fa fa-map-marker"></i>Shymkent, Kazakhstan</a></li>
-                            <li><a href="#"><i class="fa fa-phone"></i>+7707-675-95-45</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i>ashyqstore@gmail.com</a></li>
+                            <li><a href="#"><i class="fa fa-phone"></i>+7707-971-67-91</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i>razumgroup@gmail.com</a></li>
                         </ul>
                     </div>
                 </div>

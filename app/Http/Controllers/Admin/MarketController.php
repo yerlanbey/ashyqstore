@@ -50,13 +50,17 @@ class MarketController extends Controller
         return view('auth.market_foods.index', compact('market','foods'));
     }
 
-    // Создать продукт
+    /**
+     * @param $marketSlug
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function createFood($marketSlug)
     {
         $market = Market::find($marketSlug);
-        $categories = Category::all();
+        $categories = Category::query()->whereNull('category_id')->whereHas('childCategories')->get();
         return view('auth.market_foods.create', compact('categories', 'market'));
     }
+
     //Сохраняем продукт
     public function storeFood(Request $request)
     {

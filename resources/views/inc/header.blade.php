@@ -56,19 +56,7 @@
                     <div class="header-search" >
                         <form action="{{ route('search') }}" method="get">
                             @csrf
-                            <select class="input-select" name="select">
-                                @if(request()->select == 'По магазинам')
-                                    <option value="По магазинам" name="shops">По магазинам</option>
-                                    <option value="По продуктам" name="products">По продуктам</option>
-                                @elseif(request()->select == 'По продуктам')
-                                    <option value="По продуктам" name="products">По продуктам</option>
-                                    <option value="По магазинам" name="shops">По магазинам</option>
-                                @else
-                                    <option value="По магазинам" name="shops">По магазинам</option>
-                                    <option value="По продуктам" name="products">По продуктам</option>
-                                @endif
-                            </select>
-                            <input class="input" name="searching" type="search" placeholder="Поиск">
+                            <input style="position: relative" class="input" name="searching" type="search" placeholder="Поиск">
                             <button class="search-btn" type="submit">Поиск</button>
                         </form>
                     </div>
@@ -81,10 +69,9 @@
                         <!-- Wishlist -->
                         <div>
                             @if(Auth::check())
-                            <a href="{{ route('chosen', Auth::user()->id) }}">
-                                <i class="fa fa-heart-o"></i>
-                                    <span>Избранные</span>
-                            </a>
+                                <a href="{{ route('chosen', Auth::user()->id) }}">
+                                    <i class="fa fa-heart-o"> </i> <span>Избранные</span>
+                                </a>
                             @endif
                         </div>
                         <!-- /Wishlist -->
@@ -98,11 +85,17 @@
                         <!-- /Cart -->
 
                         <!-- Menu Toogle -->
-                        <div class="menu-toggle">
-                            <a href="#">
-                                <i class="fa fa-bars"></i>
-                                <span>Menu</span>
-                            </a>
+                        <div class="menu-toggle" style="position: relative; right: 16px">
+                            <section class="top-nav">
+                                <input id="menu-toggle" type="checkbox" />
+                                <label class='menu-button-container' for="menu-toggle">
+                                    <div class='menu-button'></div>
+                                </label>
+                                <ul class="menu">
+                                    <a href="{{route('products.list')}}">Товары</a>
+                                    <a href="{{ route('product.categories') }}">Категория</a>
+                                </ul>
+                            </section>
                         </div>
                         <!-- /Menu Toogle -->
                     </div>
@@ -116,6 +109,129 @@
     <!-- /MAIN HEADER -->
 </header>
 <!-- /HEADER -->
+<style>
+    h2 {
+        vertical-align: center;
+        text-align: center;
+    }
+    html, body {
+        margin: 0;
+        height: 100%;
+    }
+    .top-nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        color: #fff;
+        height: 70px;
+        left: 10px;
+        padding: 1em;
+    }
+    .menu {
+        display: flex;
+        flex-direction: row;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    .menu > a {
+        margin: 0 1rem;
+        overflow: hidden;
+    }
+    .menu-button-container {
+        display: none;
+        height: 100%;
+        width: 95px;
+        margin-left: 15px;
+        text-align: left;
+        cursor: pointer;
+        flex-direction: column;
+        justify-content: center;
 
+    }
+    #menu-toggle {
+        display: none;
+    }
+    .menu-button, .menu-button::before, .menu-button::after {
+        display: block;
+        background-color: #fff;
+        position: absolute;
+        height: 4px;
+        width: 25px;
+        transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+        border-radius: 2px;
+    }
+    .menu-button::before {
+        content: '';
+        margin-top: -8px;
+    }
+    .menu-button::after {
+        content: '';
+        margin-top: 8px;
+    }
+    #menu-toggle:checked + .menu-button-container .menu-button::before {
+        margin-top: 0px;
+        transform: rotate(405deg);
+    }
+    #menu-toggle:checked + .menu-button-container .menu-button {
+        background: rgba(255, 255, 255, 0);
+    }
+    #menu-toggle:checked + .menu-button-container .menu-button::after {
+        margin-top: 0px;
+        transform: rotate(-405deg);
+    }
+    @media (max-width: 700px) {
+        .menu-button-container {
+            display: flex;
+        }
+        .menu {
+            position: absolute;
+            top: 0;
+            margin-top: 50px;
+            left: 0;
+            flex-direction: column;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        #menu-toggle ~ .menu a {
+            height: 0;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        #menu-toggle:checked ~ .menu a {
+            border: 1px solid #333;
+            height: 2.5em;
+            padding: 0.5em;
+            transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .menu > a {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0.5em 0;
+            width: 100%;
+            color: white;
+            background-color: #222;
+        }
+        .menu > a:not(:last-child) {
+            border-bottom: 1px solid #444;
+        }
+    }
 
+</style>
 
+<script>
+    function menu() {
+        var x = document.getElementById("menuElements");
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+        }
+    }
+</script>
