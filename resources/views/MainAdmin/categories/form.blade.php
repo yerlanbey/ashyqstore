@@ -51,27 +51,29 @@
                             </div>
                         </div>
                     <br>
-                        <div class="form-group">
-                            <label for="category_id">Категория</label>
-                            <div style="padding-bottom: 4px">
-                                <span class="btn btn-info btn-xs select-all" style="border-radius: 0">Выбрать все</span>
-                                <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">Убрать все</span>
-                            </div>
-                            <select class="form-control select2 {{ $errors->has('category') ? 'is-invalid' : '' }}" value="" name="category_id" id="category_id">
-                                <option value="">Выберите категорию</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                    @foreach($category->childCategories as $childCategory)
-                                        <option value="{{ $childCategory->id }}" {{ old('category_id') == $childCategory->id ? 'selected' : '' }}>-- {{ $childCategory->name }}</option>
-                                    @endforeach
-                                @endforeach
-                            </select>
-                            @if($errors->has('category'))
-                                <div class="invalid-feedback">
-                                    {{ $errors->first('category') }}
+                        @isset($categories)
+                            <div class="form-group">
+                                <label for="category_id">Категория</label>
+                                <div style="padding-bottom: 4px">
+                                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">Выбрать все</span>
+                                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">Убрать все</span>
                                 </div>
-                            @endif
-                        </div>
+                                <select class="form-control select2 {{ $errors->has('category') ? 'is-invalid' : '' }}" value="" name="category_id" id="category_id">
+                                    <option value="">Выберите категорию</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                        @foreach($category->childCategories as $childCategory)
+                                            <option value="{{ $childCategory->id }}" {{ old('category_id') == $childCategory->id ? 'selected' : '' }}>-- {{ $childCategory->name }}</option>
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                                @if($errors->has('category'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('category') }}
+                                    </div>
+                                @endif
+                            </div>
+                        @endisset
                     <br>
                         <div class="input-group row">
                             <label for="description" class="col-sm-2 col-form-label">Описание: </label>

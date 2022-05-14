@@ -8,8 +8,13 @@ use App\Http\Requests\CategoryRequest;
 use App\Market;
 use App\ProductCategory;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class MainCategoryController extends Controller
 {
@@ -38,12 +43,10 @@ class MainCategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @return RedirectResponse
      */
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): RedirectResponse
     {
         $parametrs = $request->all();//все данные из запроса
         unset($parametrs['image']);//исключение картинки
@@ -55,22 +58,19 @@ class MainCategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param $category
+     * @return Application|Factory|View
      */
     public function show($category)
     {
         $category = Category::find($category);
+
         return view('MainAdmin.categories.show',compact('category'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param $category
+     * @return Application|Factory|View
      */
     public function edit($category)
     {
@@ -80,16 +80,14 @@ class MainCategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $category
+     * @return RedirectResponse
      */
-    public function update(Request $request, $category)
+    public function update(Request $request, $category): RedirectResponse
     {
-
         $category = Category::find($category);
+
         $request->validate([
             'name' => 'required',
             'code' => 'required',
@@ -106,10 +104,8 @@ class MainCategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param $category
+     * @return RedirectResponse
      */
     public function destroy($category)
     {
@@ -118,7 +114,11 @@ class MainCategoryController extends Controller
         return redirect()->route('maincategory.index');
     }
 
-    public function checkSlug(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkSlug(Request $request): JsonResponse
     {
         $slug = SlugService::createSlug(Category::class, 'code', $request->name);
         return response()->json(['slug' => $slug]);
